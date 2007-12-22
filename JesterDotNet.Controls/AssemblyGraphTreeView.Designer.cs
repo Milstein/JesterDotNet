@@ -36,6 +36,7 @@ namespace JesterDotNet.Controls
             // 
             // treeView
             // 
+            this.treeView.CheckBoxes = true;
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView.ImageIndex = 0;
             this.treeView.ImageList = this.objectIconsImageList;
@@ -44,6 +45,7 @@ namespace JesterDotNet.Controls
             this.treeView.SelectedImageIndex = 0;
             this.treeView.Size = new System.Drawing.Size(150, 150);
             this.treeView.TabIndex = 0;
+            this.treeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.OnTreeViewAfterCheck);
             // 
             // objectIconsImageList
             // 
@@ -54,6 +56,7 @@ namespace JesterDotNet.Controls
             this.objectIconsImageList.Images.SetKeyName(2, "imgNamespace");
             this.objectIconsImageList.Images.SetKeyName(3, "imgClass");
             this.objectIconsImageList.Images.SetKeyName(4, "imgMethod");
+            this.objectIconsImageList.Images.SetKeyName(5, "imgBranch");
             // 
             // AssemblyGraphTreeView
             // 
