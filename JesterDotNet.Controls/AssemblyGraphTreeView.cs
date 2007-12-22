@@ -9,7 +9,6 @@ namespace JesterDotNet.Controls
     {
         private readonly IDictionary<OpCode,string> 
             _branchingOpCodes = new Dictionary<OpCode,string>();
-
         private readonly string Assembly = "imgAssembly";
         private readonly string Module = "imgModule";
         private readonly string Class = "imgClass";
@@ -178,6 +177,13 @@ namespace JesterDotNet.Controls
             return treeNode;
         }
 
+        /// <summary>
+        /// Called when the user checks a node of the tree view.  Propogates the check state down
+        /// to all of the little check children.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="TreeViewEventArgs"/> instance containing the event 
+        /// data.</param>
         private void OnTreeViewAfterCheck(object sender, TreeViewEventArgs e)
         {
             CheckChildren(e.Node);
