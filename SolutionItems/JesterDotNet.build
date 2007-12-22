@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<project name="PhuzeSampleDataGenerator" default="test">
+  <target name="compile">
+    <loadtasks assembly="C:/Program Files/NAntContrib/bin/NAnt.Contrib.Tasks.dll" />
+    <msbuild project="../JesterDotNet.sln">
+      <property name="Configuration" value="Debug"/>
+    </msbuild>
+  </target>
+  <target name="test" depends="compile">
+    <mbunit report-types="xml">
+      <assemblies>
+        <include asis="true" name="..\JesterDotNet.Model.Tests\bin\Debug\JesterDotNet.Model.Tests.dll" />
+        <include asis="true" name="..\JesterDotNet.Presenter.Tests\bin\Debug\JesterDotNet.Presenter.Tests.dll" />        
+      </assemblies>
+    </mbunit>
+  </target>
+</project>

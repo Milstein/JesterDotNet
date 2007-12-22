@@ -1,0 +1,8 @@
+*Get the ILReader working to identify conditionals in the code
+*Try and figure out how to read PDBs so that we can display the source code in the app
+*Refactor MbUnit related code into a separate assembly to reinforce the plugin architecture
+*There shouldn't be an MbUnit specific reference inside of the preferences file, it should
+	only refer to the type of testing framework used
+*How are we going to ensure that prefs are saved?  Should it implement IDisposable and save on dispose?
+*Remove the old settings stuff in the config file.  We should have config settings for Output.IL, etc, and windows temp.
+	-We'll have to write a custom configuration handler

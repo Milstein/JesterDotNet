@@ -1,0 +1,83 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F98E92BE-34E6-43C7-8AD1-8AF50CCC8782}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JesterDotNet.Presenter.Tests</RootNamespace>
+    <AssemblyName>JesterDotNet.Presenter.Tests</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MbUnit.Framework, Version=1.0.2700.29885, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5" />
+    <Reference Include="Rhino.Mocks, Version=3.1.0.584, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="JesterProjectTest.cs" />
+    <Compile Include="JesterPresenterTest.cs" />
+    <Compile Include="PreferencesPresenterTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JesterDotNet.Model\JesterDotNet.Model.csproj">
+      <Project>{3AA92C0B-1586-43C0-A1C2-54719DCA7CC6}</Project>
+      <Name>JesterDotNet.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JesterDotNet.Presenter\JesterDotNet.Presenter.csproj">
+      <Project>{235B8F67-F452-48C5-8A76-2C918742C55E}</Project>
+      <Name>JesterDotNet.Presenter</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\DemoAppWithConditionals.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\SampleProject.jst" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\MbUnit.Framework.dll" />
+    <EmbeddedResource Include="SampleData\QuickGraph.Algorithms.dll" />
+    <EmbeddedResource Include="SampleData\QuickGraph.dll" />
+    <EmbeddedResource Include="SampleData\Refly.dll" />
+    <EmbeddedResource Include="SampleData\TestFu.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\AnimalFarm.dll" />
+    <EmbeddedResource Include="SampleData\AnimalFarm.Tests.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,106 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{592413E4-510F-4722-9892-E6C88D7C861C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JesterDotNet.Model.Tests</RootNamespace>
+    <AssemblyName>JesterDotNet.Model.Tests</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MbUnit.Framework, Version=1.0.2700.29885, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\MbUnit.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ILAsmTest.cs" />
+    <Compile Include="ILParserTest.cs" />
+    <Compile Include="ILDasmTest.cs" />
+    <Compile Include="MbUnitTestRunnerTest.cs" />
+    <Compile Include="PreferencesTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JesterDotNet.Forms\JesterDotNet.Forms.csproj">
+      <Project>{8CBFF525-F05C-4C5C-A4BE-4BE79A3C3137}</Project>
+      <Name>JesterDotNet.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JesterDotNet.Model\JesterDotNet.Model.csproj">
+      <Project>{3AA92C0B-1586-43C0-A1C2-54719DCA7CC6}</Project>
+      <Name>JesterDotNet.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\HelloWorld.exe" />
+    <EmbeddedResource Include="SampleData\HelloWorld.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\SampleDll.il" />
+    <EmbeddedResource Include="SampleData\SampleDll.res" />
+    <EmbeddedResource Include="SampleData\SampleExe_Mutated.il" />
+    <EmbeddedResource Include="SampleData\DemoAppWithConditionals.il" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\DemoAppWithConditionals.exe" />
+    <EmbeddedResource Include="SampleData\DemoAppWithConditionals.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\SampleMbUnitReport.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\SampleDll.dll" />
+    <EmbeddedResource Include="SampleData\SampleDll.Tests.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SampleData\MbUnit.Framework.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleData\QuickGraph.Algorithms.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleData\QuickGraph.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleData\Refly.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleData\TestFu.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

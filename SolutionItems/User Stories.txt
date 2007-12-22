@@ -1,0 +1,25 @@
+*Select assemblies and generate mutated versions of these assemblies
+	-Browse to and select target assemblies
+	-Browse to and select and output directory
+	-Decompile the assemblies into IL
+	-Search the IL for any instances of our selected conditionals
+	-Invert the conditionals when they are found
+	-Recompile the assemblies
+
+*Rerun the tests against the mutated versions of the assemblies
+	-Load the mutated assemblies
+	-Load the unti test assemblies
+		+This may involve having to copy the unit testing assemblies to the output directory.  
+		 .NET versioning should allow this and should load the mutated assemblies first since
+		 they will be immediately beside the testing assemblies. 
+	-Run the unit tests against the new assemblies.
+		+Either shell out to NUnit.Console or link directly against the NUnit.Core libraries
+		+What about the code that's not written against NUnit?  MbUnit?  csUnit?
+	-Display the results (passed/failed tests) in a tree view similar to NUnit GUI
+		+Instead of simple red/green dots, maybe green skulls and red bugs(?) for mutants killed
+	
+*Display the CSharp versions of the code with highlighted areas where we mutated
+	-Similar to how NCover highlights untraversed sections of code, we would highlight
+	 sections of code that we mutated
+	-Need to be able to get back from the mutated IL to the high level language (C#)
+		+Will we support all .NET languages?  VB.NET?  J#?

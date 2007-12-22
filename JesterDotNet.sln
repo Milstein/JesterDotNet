@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{E936628A-F24A-4006-837E-7FB07BC142F0}"
+	ProjectSection(SolutionItems) = preProject
+		SolutionItems\BurnDownList.txt = SolutionItems\BurnDownList.txt
+		SolutionItems\JesterDotNet.build = SolutionItems\JesterDotNet.build
+		SolutionItems\User Stories.txt = SolutionItems\User Stories.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Presenter", "JesterDotNet.Presenter\JesterDotNet.Presenter.csproj", "{235B8F67-F452-48C5-8A76-2C918742C55E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Model", "JesterDotNet.Model\JesterDotNet.Model.csproj", "{3AA92C0B-1586-43C0-A1C2-54719DCA7CC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Model.Tests", "JesterDotNet.Model.Tests\JesterDotNet.Model.Tests.csproj", "{592413E4-510F-4722-9892-E6C88D7C861C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Presenter.Tests", "JesterDotNet.Presenter.Tests\JesterDotNet.Presenter.Tests.csproj", "{F98E92BE-34E6-43C7-8AD1-8AF50CCC8782}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Forms", "JesterDotNet.Forms\JesterDotNet.Forms.csproj", "{8CBFF525-F05C-4C5C-A4BE-4BE79A3C3137}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{46729502-EFA1-497B-B292-077F301A325F}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\MbUnit.Framework.dll = Dependencies\MbUnit.Framework.dll
+		Dependencies\Mono.Cecil.dll = Dependencies\Mono.Cecil.dll
+		Dependencies\Mono.Cecil.Mdb.dll = Dependencies\Mono.Cecil.Mdb.dll
+		Dependencies\Mono.Cecil.Pdb.dll = Dependencies\Mono.Cecil.Pdb.dll
+		Dependencies\Rhino.Mocks.dll = Dependencies\Rhino.Mocks.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Controls", "JesterDotNet.Controls\JesterDotNet.Controls.csproj", "{9879AF07-1823-4FC4-B967-1E8565A25D1A}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "JesterDotNet.Deployment", "JesterDotNet.Deployment\JesterDotNet.Deployment.vdproj", "{D35224CD-3CE0-41E3-A009-15A993620898}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{235B8F67-F452-48C5-8A76-2C918742C55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{235B8F67-F452-48C5-8A76-2C918742C55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{235B8F67-F452-48C5-8A76-2C918742C55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{235B8F67-F452-48C5-8A76-2C918742C55E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AA92C0B-1586-43C0-A1C2-54719DCA7CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AA92C0B-1586-43C0-A1C2-54719DCA7CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AA92C0B-1586-43C0-A1C2-54719DCA7CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AA92C0B-1586-43C0-A1C2-54719DCA7CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{592413E4-510F-4722-9892-E6C88D7C861C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592413E4-510F-4722-9892-E6C88D7C861C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592413E4-510F-4722-9892-E6C88D7C861C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592413E4-510F-4722-9892-E6C88D7C861C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98E92BE-34E6-43C7-8AD1-8AF50CCC8782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98E92BE-34E6-43C7-8AD1-8AF50CCC8782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98E92BE-34E6-43C7-8AD1-8AF50CCC8782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98E92BE-34E6-43C7-8AD1-8AF50CCC8782}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CBFF525-F05C-4C5C-A4BE-4BE79A3C3137}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CBFF525-F05C-4C5C-A4BE-4BE79A3C3137}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CBFF525-F05C-4C5C-A4BE-4BE79A3C3137}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CBFF525-F05C-4C5C-A4BE-4BE79A3C3137}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9879AF07-1823-4FC4-B967-1E8565A25D1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9879AF07-1823-4FC4-B967-1E8565A25D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9879AF07-1823-4FC4-B967-1E8565A25D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9879AF07-1823-4FC4-B967-1E8565A25D1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D35224CD-3CE0-41E3-A009-15A993620898}.Debug|Any CPU.ActiveCfg = Debug
+		{D35224CD-3CE0-41E3-A009-15A993620898}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
