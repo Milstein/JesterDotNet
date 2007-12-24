@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Mono.Cecil;
@@ -104,6 +105,23 @@ namespace JesterDotNet.Controls
                     moduleTreeNode.Expand();
                 }
                 assemblyTreeNode.Expand();
+            }
+        }
+
+        /// <summary>
+        /// Gets the checked items.
+        /// </summary>
+        /// <value>The checked items.</value>
+        public object CheckedItems
+        {
+            get
+            {
+                TreeNode[] allNodes = new TreeNode[treeView.Nodes.Count];
+                treeView.Nodes.CopyTo(allNodes, 0);
+
+                TreeNode[] checkedNodes = Array.FindAll(allNodes, 
+                    delegate(TreeNode treeNode) { return treeNode.Checked; });
+                return checkedNodes;
             }
         }
 
