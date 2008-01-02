@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using JesterDotNet.Presenter;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -8,13 +8,14 @@ namespace JesterDotNet.Controls
 {
     public partial class AssemblyGraphTreeView : UserControl
     {
-        private readonly IDictionary<OpCode,string> 
-            _branchingOpCodes = new Dictionary<OpCode,string>();
+        private readonly IDictionary<OpCode, string>
+            _branchingOpCodes = new Dictionary<OpCode, string>();
+
         private readonly string Assembly = "imgAssembly";
-        private readonly string Module = "imgModule";
+        private readonly string Branch = "imgBranch";
         private readonly string Class = "imgClass";
         private readonly string Method = "imgMethod";
-        private readonly string Branch = "imgBranch";
+        private readonly string Module = "imgModule";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyGraphTreeView"/> class.
@@ -24,6 +25,24 @@ namespace JesterDotNet.Controls
             InitializeComponent();
 
             PopulateBranchingOpCodes();
+        }
+
+        /// <summary>
+        /// Gets an enumeration of the member definitions that the user has selected in the control.
+        /// </summary>
+        /// <value>an enumeration of the member definitions that the user has selected in the 
+        /// control.</value>
+        public IEnumerable<object> SelectedMemberDefinitions
+        {
+            get
+            {
+                IList<object> definitions = new List<object>();
+                foreach (TreeNode node in treeView.Nodes)
+                    if (node.Checked)
+                        definitions.Add(node.Tag);
+
+                return definitions;
+            }
         }
 
         /// <summary>
@@ -41,7 +60,7 @@ namespace JesterDotNet.Controls
                     AssemblyFactory.GetAssembly(fileNames[theAssembly]);
 
                 TreeNode assemblyTreeNode =
-                    CreateTreeNode(fileNames[theAssembly], Assembly);
+                    CreateTreeNode(fileNames[theAssembly], inputAssembly, Assembly);
                 treeView.Nodes.Add(assemblyTreeNode);
 
                 // Retrieve the modules from the assembly.  Most assemblies only have one
@@ -50,7 +69,8 @@ namespace JesterDotNet.Controls
                 {
                     // Add a node to the tree to represent the module
                     TreeNode moduleTreeNode =
-                        CreateTreeNode(inputAssembly.Modules[theModule].Name, Module);
+                        CreateTreeNode(inputAssembly.Modules[theModule].Name,
+                                       inputAssembly.Modules[theModule], Module);
                     treeView.Nodes[theAssembly].Nodes.Add(moduleTreeNode);
 
                     // Add the classes in each type
@@ -61,7 +81,7 @@ namespace JesterDotNet.Controls
                         // Add a node to the tree to represent the class
                         treeView.Nodes[theAssembly].Nodes[theModule].Nodes.Add(
                             CreateTreeNode(inputAssembly.Modules[theModule].Types[theType].FullName,
-                                           Class));
+                                           inputAssembly.Modules[theModule].Types[theType], Class));
 
                         // Create a test method for each method in this type
                         for (int theMethod = 0;
@@ -72,7 +92,7 @@ namespace JesterDotNet.Controls
                             MethodDefinition methodDefinition =
                                 inputAssembly.Modules[theModule].Types[theType].Methods[theMethod];
                             treeView.Nodes[theAssembly].Nodes[theModule].Nodes[theType].Nodes.Add(
-                                CreateTreeNode(methodDefinition.Name, Method));
+                                CreateTreeNode(methodDefinition.Name, methodDefinition, Method));
 
                             // Store the method's MethodInfo object in this node's tag
                             // so that we may retrieve it later
@@ -85,9 +105,12 @@ namespace JesterDotNet.Controls
                             if (methodDefinition.HasBody)
                             {
                                 MethodBody body = methodDefinition.Body;
-                                foreach (Instruction instruction in body.Instructions)
+                                for (int theConditional = 0;
+                                     theConditional < body.Instructions.Count;
+                                     theConditional++)
                                 {
-                                    if (_branchingOpCodes.ContainsKey(instruction.OpCode))
+                                    if (_branchingOpCodes.ContainsKey(
+                                        body.Instructions[theConditional].OpCode))
                                     {
                                         treeView.
                                             Nodes[theAssembly].
@@ -95,8 +118,12 @@ namespace JesterDotNet.Controls
                                             Nodes[theType].
                                             Nodes[theMethod].
                                             Nodes.Add(
-                                            CreateTreeNode(_branchingOpCodes[instruction.OpCode],
-                                                       Branch));
+                                            CreateTreeNode(
+                                                _branchingOpCodes[
+                                                    body.Instructions[theConditional].OpCode],
+                                                new ConditionalDefinition(methodDefinition,
+                                                                          theConditional),
+                                                Branch));
                                     }
                                 }
                             }
@@ -105,23 +132,6 @@ namespace JesterDotNet.Controls
                     moduleTreeNode.Expand();
                 }
                 assemblyTreeNode.Expand();
-            }
-        }
-
-        /// <summary>
-        /// Gets the checked items.
-        /// </summary>
-        /// <value>The checked items.</value>
-        public object CheckedItems
-        {
-            get
-            {
-                TreeNode[] allNodes = new TreeNode[treeView.Nodes.Count];
-                treeView.Nodes.CopyTo(allNodes, 0);
-
-                TreeNode[] checkedNodes = Array.FindAll(allNodes, 
-                    delegate(TreeNode treeNode) { return treeNode.Checked; });
-                return checkedNodes;
             }
         }
 
@@ -183,12 +193,14 @@ namespace JesterDotNet.Controls
         /// given text and image key.
         /// </summary>
         /// <param name="text">The text of the TreeNode.</param>
+        /// <param name="memberDefinition">The definition of the member that this node represents.</param>
         /// <param name="imageKey">The key corresponding to the TreeNode's image.</param>
-        /// <returns></returns>
-        private TreeNode CreateTreeNode(string text, string imageKey)
+        /// <returns>A valid <see cref="TreeNode"/> representing the given attributes.</returns>
+        private TreeNode CreateTreeNode(string text, object memberDefinition, string imageKey)
         {
             TreeNode treeNode = new TreeNode(text);
             treeNode.Checked = true;
+            treeNode.Tag = memberDefinition;
             treeNode.ImageIndex = objectIconsImageList.Images.IndexOfKey(imageKey);
             treeNode.SelectedImageIndex = objectIconsImageList.Images.IndexOfKey(imageKey);
 

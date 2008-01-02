@@ -68,6 +68,12 @@
   <ItemGroup>
     <Content Include="Resources\Branch.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JesterDotNet.Presenter\JesterDotNet.Presenter.csproj">
+      <Project>{235B8F67-F452-48C5-8A76-2C918742C55E}</Project>
+      <Name>JesterDotNet.Presenter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
