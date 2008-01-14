@@ -18,7 +18,6 @@ namespace JesterDotNet.Presenter
         {
             _methodDefinition = methodDefinition;
             _conditionalNumber = conditionalNumber;
-            throw new NotImplementedException();
         }
 
         /// <summary>

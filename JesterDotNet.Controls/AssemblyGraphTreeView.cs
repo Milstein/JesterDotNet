@@ -28,21 +28,41 @@ namespace JesterDotNet.Controls
         }
 
         /// <summary>
-        /// Gets an enumeration of the member definitions that the user has selected in the control.
+        /// Gets an enumeration of the conditionals that the user has selected in the control.
         /// </summary>
-        /// <value>an enumeration of the member definitions that the user has selected in the 
-        /// control.</value>
-        public IEnumerable<object> SelectedMemberDefinitions
+        /// <value>an enumeration of the conditionals that the user has selected in the control.</value>
+        public IEnumerable<ConditionalDefinition> SelectedConditionals
         {
             get
             {
-                IList<object> definitions = new List<object>();
+                // Get all checked tree nodes recursively
+                // Return a collection of the ones that are conditionals
+                IList<ConditionalDefinition> selectedConditionals =
+                    new List<ConditionalDefinition>();
                 foreach (TreeNode node in treeView.Nodes)
-                    if (node.Checked)
-                        definitions.Add(node.Tag);
-
-                return definitions;
+                {
+                    foreach (TreeNode selectedNode in GetSelectedSubNodes(node))
+                    {
+                        // selected conditionals add stuff
+                        ConditionalDefinition conditionalDefinition =
+                            selectedNode.Tag as ConditionalDefinition;
+                        if (conditionalDefinition != null)
+                            selectedConditionals.Add((ConditionalDefinition)selectedNode.Tag);
+                    }
+                }
+                return selectedConditionals;
             }
+        }
+
+        private IEnumerable<TreeNode> GetSelectedSubNodes(TreeNode parentNode)
+        {
+            IList<TreeNode> selectedNodes = new List<TreeNode>();
+            foreach (TreeNode childNode in parentNode.Nodes)
+            {
+                if (childNode.Checked)
+                    selectedNodes.Add(childNode);
+            }
+            return selectedNodes;
         }
 
         /// <summary>
