@@ -48,7 +48,7 @@ namespace JesterDotNet.Presenter
         #endregion Events (Public)
 
         #region Event Handlers (Private)
-
+        
         /// <summary>
         /// Called when <see cref="IJesterView.Run"/> event is fired.  Performs the 
         /// mutation.
@@ -58,49 +58,57 @@ namespace JesterDotNet.Presenter
         /// containing the event data.</param>
         private void OnViewRun(object sender, RunEventArgs e)
         {
-            string ilFile = Path.Combine(_preferences.TempPath, _preferences.OutputILFileName);
-            string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
-
-            // Disassemble the target assembly
-            using (FileStream stream = new FileStream(e.InputAssembly, FileMode.Open))
-            {
-                ILDasm ilDasm = new ILDasm(stream);
-                ilDasm.Invoke();
-            }
-            // Invert the conditionals in that file
-            using (FileStream stream = new FileStream(ilFile, FileMode.Open))
-            {
-                string[] conditionals = { "brtrue.s" };
-                ILParser parser = new ILParser(stream);
-                parser.InvertConditionals(conditionals);
-
-                // Reassemble the mutated file into an assembly
-                string invertedConditionals = Path.GetTempFileName();
-                using (FileStream fileStream = new FileStream(invertedConditionals, 
-                    FileMode.OpenOrCreate))
-                {
-                    foreach (char theChar in parser.Code)
-                        fileStream.WriteByte((byte) theChar);
-
-                    ILAsm ilAsm = new ILAsm(fileStream);
-                    ilAsm.Invoke();
-                }
-            }
-
-            // Replace the original target assembly with the mutated assembly
-            File.Delete(e.InputAssembly);
-            File.Copy(outputFile, e.InputAssembly);
-
-            // Run the unit tests again, this time against the mutated assembly
-            MbUnitTestRunner runner = new MbUnitTestRunner();
-            runner.Invoke(e.TestAssembly);
-
+            // TODO: We can probably tighten up this for loop if we take a closer look at this loop
             IList<TestResultDto> resultDtos = new List<TestResultDto>();
-            foreach (TestResult result in runner.TestResults)
-                if (result is PassingTestResult)
-                    resultDtos.Add(new PassingTestResultDto((PassingTestResult)result));
-                else 
-                    resultDtos.Add(new FailingTestResultDto((FailingTestResult)result));
+            foreach (ConditionalDefinition conditionalDefinition in e.SelectedConditionals)
+            {
+                string ilFile = Path.Combine(_preferences.TempPath, _preferences.OutputILFileName);
+                string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
+
+                // Disassemble the target assembly
+                using (FileStream stream = new FileStream(e.InputAssembly, FileMode.Open))
+                {
+                    ILDasm ilDasm = new ILDasm(stream);
+                    ilDasm.Invoke();
+                }
+                // Invert the conditionals in that file
+                // TODO: This code currently invokes all conditionals found, we need to adjust this
+                // to invoke only the current selected conditional.
+                // We'll just repeat this code once for each selected conditional...yeah, this will
+                // take a while, but mutation testers are expected to take a while
+                using (FileStream stream = new FileStream(ilFile, FileMode.Open))
+                {
+                    string[] conditionals = {"brtrue.s"};
+                    ILParser parser = new ILParser(stream);
+                    parser.InvertConditionals(conditionals);
+
+                    // Reassemble the mutated file into an assembly
+                    string invertedConditionals = Path.GetTempFileName();
+                    using (FileStream fileStream = new FileStream(invertedConditionals,
+                                                                  FileMode.OpenOrCreate))
+                    {
+                        foreach (char theChar in parser.Code)
+                            fileStream.WriteByte((byte)theChar);
+
+                        ILAsm ilAsm = new ILAsm(fileStream);
+                        ilAsm.Invoke();
+                    }
+                }
+
+                // Replace the original target assembly with the mutated assembly
+                File.Delete(e.InputAssembly);
+                File.Copy(outputFile, e.InputAssembly);
+
+                // Run the unit tests again, this time against the mutated assembly
+                MbUnitTestRunner runner = new MbUnitTestRunner();
+                runner.Invoke(e.TestAssembly);
+
+                foreach (TestResult result in runner.TestResults)
+                    if (result is PassingTestResult)
+                        resultDtos.Add(new PassingTestResultDto((PassingTestResult)result));
+                    else
+                        resultDtos.Add(new FailingTestResultDto((FailingTestResult)result));
+            }
 
             if (_testComplete != null)
                 _testComplete(this, new TestCompleteEventArgs(resultDtos));
@@ -140,6 +148,7 @@ namespace JesterDotNet.Presenter
         /// </returns>
         public string[] ExtractConditionals(Stream ilStream)
         {
+            // TODO: This may not be needed - we seem to only be using it from a unit test
             string[] foundConditionals;
             using (StreamReader reader = new StreamReader(ilStream))
             {

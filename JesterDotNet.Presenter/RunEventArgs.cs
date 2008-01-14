@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace JesterDotNet.Presenter
 {
@@ -11,6 +12,7 @@ namespace JesterDotNet.Presenter
 
         private readonly string _inputAssembly;
         private readonly string _testAssembly;
+        private readonly IEnumerable<ConditionalDefinition> _selectedConditionals;
 
         #endregion Fields (Private)
 
@@ -21,10 +23,14 @@ namespace JesterDotNet.Presenter
         /// </summary>
         /// <param name="inputAssembly">The assembly to mutate.</param>
         /// <param name="testAssembly">The assembly which contains the tests to run.</param>
-        public RunEventArgs(string inputAssembly, string  testAssembly)
+        /// <param name="selectedConditionals">The conditionals which the user has selected to 
+        /// mutate.</param>
+        public RunEventArgs(string inputAssembly, string  testAssembly, 
+            IEnumerable<ConditionalDefinition> selectedConditionals)
         {
             _inputAssembly = inputAssembly;
             _testAssembly = testAssembly;
+            _selectedConditionals = selectedConditionals;
         }
 
         #endregion Constructors (Public)
@@ -47,6 +53,15 @@ namespace JesterDotNet.Presenter
         public string TestAssembly
         {
             get { return _testAssembly; }
+        }
+
+        /// <summary>
+        /// Gets the conditionals that the user has selected to mutate.
+        /// </summary>
+        /// <value>The conditionals that the user has selected to mutate.</value>
+        public IEnumerable<ConditionalDefinition> SelectedConditionals
+        {
+            get { return _selectedConditionals; }
         }
 
         #endregion Properties (Public)
