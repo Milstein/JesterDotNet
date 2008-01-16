@@ -12,7 +12,7 @@ namespace JesterDotNet.Presenter
         /// </summary>
         /// <param name="methodDefinition">The method containing the object.</param>
         /// <param name="conditionalNumber">The zero-based index of the conditional statement 
-        /// inside of the method.</param>
+        /// inside of the method body.</param>
         public ConditionalDefinition(MethodDefinition methodDefinition, int conditionalNumber)
         {
             _methodDefinition = methodDefinition;
@@ -31,9 +31,9 @@ namespace JesterDotNet.Presenter
         }
 
         /// <summary>
-        /// Gets the zero-based index of the conditional statement inside of its method.
+        /// Gets the zero-based index of the conditional statement inside of its method body.
         /// </summary>
-        /// <value>The zero-based index of the conditional statement inside of its method.</value>
+        /// <value>The zero-based index of the conditional statement inside of its method body.</value>
         public int ConditionalNumber
         {
             get { return _conditionalNumber; }

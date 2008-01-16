@@ -47,7 +47,7 @@ namespace JesterDotNet.Presenter.Tests
                     };
 
                 runEvent.Raise(presenter,
-                               new RunEventArgs(targetAssembly, testAssembly));
+                               new RunEventArgs(targetAssembly, testAssembly, null));
             }
 
             int numberOfFailingTests = 0;

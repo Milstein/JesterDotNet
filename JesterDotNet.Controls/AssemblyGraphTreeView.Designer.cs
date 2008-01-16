@@ -46,6 +46,7 @@ namespace JesterDotNet.Controls
             this.treeView.Size = new System.Drawing.Size(150, 150);
             this.treeView.TabIndex = 0;
             this.treeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.OnTreeViewAfterCheck);
+            this.treeView.BeforeCheck += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeCheck);
             // 
             // objectIconsImageList
             // 

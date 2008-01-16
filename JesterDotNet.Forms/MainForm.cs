@@ -114,7 +114,8 @@ namespace JesterDotNet.Forms
         private void RunButton_Click(object sender, EventArgs e)
         {
             if (Run != null)
-                Run(this, new RunEventArgs(_shadowedTargetAssembly, _shadowedTestAssembly));
+                Run(this, new RunEventArgs(_shadowedTargetAssembly, _shadowedTestAssembly,
+                    targetAssemblyTreeView.SelectedConditionals));
         }
 
         #endregion Event Handlers
