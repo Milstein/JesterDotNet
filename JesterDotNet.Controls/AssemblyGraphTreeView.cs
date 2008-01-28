@@ -24,7 +24,6 @@ namespace JesterDotNet.Controls
         public AssemblyGraphTreeView()
         {
             InitializeComponent();
-
             PopulateBranchingOpCodes();
         }
 
@@ -129,12 +128,12 @@ namespace JesterDotNet.Controls
                             if (methodDefinition.HasBody)
                             {
                                 MethodBody body = methodDefinition.Body;
-                                for (int theConditional = 0;
-                                     theConditional < body.Instructions.Count;
-                                     theConditional++)
+                                for (int theInstruction = 0;
+                                     theInstruction < body.Instructions.Count;
+                                     theInstruction++)
                                 {
                                     if (_branchingOpCodes.ContainsKey(
-                                        body.Instructions[theConditional].OpCode))
+                                        body.Instructions[theInstruction].OpCode))
                                     {
                                         treeView.
                                             Nodes[theAssembly].
@@ -144,9 +143,9 @@ namespace JesterDotNet.Controls
                                             Nodes.Add(
                                             CreateTreeNode(
                                                 _branchingOpCodes[
-                                                    body.Instructions[theConditional].OpCode],
+                                                    body.Instructions[theInstruction].OpCode],
                                                 new ConditionalDefinition(methodDefinition,
-                                                                          theConditional),
+                                                                          theInstruction),
                                                 Branch));
                                     }
                                 }
@@ -205,8 +204,6 @@ namespace JesterDotNet.Controls
             _branchingOpCodes.Add(OpCodes.Blt_Un_S, Resources.BranchLessThan);
             _branchingOpCodes.Add(OpCodes.Bne_Un, Resources.BranchNotEqual);
             _branchingOpCodes.Add(OpCodes.Bne_Un_S, Resources.BranchNotEqual);
-            _branchingOpCodes.Add(OpCodes.Br, Resources.Branch);
-            _branchingOpCodes.Add(OpCodes.Br_S, Resources.Branch);
             _branchingOpCodes.Add(OpCodes.Brfalse, Resources.BranchFalse);
             _branchingOpCodes.Add(OpCodes.Brfalse_S, Resources.BranchFalse);
             _branchingOpCodes.Add(OpCodes.Brtrue, Resources.BranchTrue);

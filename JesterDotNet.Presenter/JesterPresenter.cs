@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using JesterDotNet.Model;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 namespace JesterDotNet.Presenter
 {
@@ -48,7 +51,7 @@ namespace JesterDotNet.Presenter
         #endregion Events (Public)
 
         #region Event Handlers (Private)
-        
+
         /// <summary>
         /// Called when <see cref="IJesterView.Run"/> event is fired.  Performs the 
         /// mutation.
@@ -62,41 +65,23 @@ namespace JesterDotNet.Presenter
             IList<TestResultDto> resultDtos = new List<TestResultDto>();
             foreach (ConditionalDefinition conditionalDefinition in e.SelectedConditionals)
             {
-                string ilFile = Path.Combine(_preferences.TempPath, _preferences.OutputILFileName);
                 string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
 
-                // Disassemble the target assembly
-                using (FileStream stream = new FileStream(e.InputAssembly, FileMode.Open))
+                for (int i = 0; i < conditionalDefinition.MethodDefinition.Body.Instructions.Count; i++)
                 {
-                    ILDasm ilDasm = new ILDasm(stream);
-                    ilDasm.Invoke();
-                }
-                // Invert the conditionals in that file
-                // TODO: This code currently invokes all conditionals found, we need to adjust this
-                // to invoke only the current selected conditional.
-                // We'll just repeat this code once for each selected conditional...yeah, this will
-                // take a while, but mutation testers are expected to take a while
-                using (FileStream stream = new FileStream(ilFile, FileMode.Open))
-                {
-                    string[] conditionals = {"brtrue.s"};
-                    ILParser parser = new ILParser(stream);
-                    parser.InvertConditionals(conditionals);
-
-                    // Reassemble the mutated file into an assembly
-                    string invertedConditionals = Path.GetTempFileName();
-                    using (FileStream fileStream = new FileStream(invertedConditionals,
-                                                                  FileMode.OpenOrCreate))
+                    Instruction instruction = conditionalDefinition.MethodDefinition.Body.Instructions[i];
+                    if (IsConditional(instruction))
                     {
-                        foreach (char theChar in parser.Code)
-                            fileStream.WriteByte((byte)theChar);
-
-                        ILAsm ilAsm = new ILAsm(fileStream);
-                        ilAsm.Invoke();
+                        if (i == conditionalDefinition.InstructionNumber)
+                        {
+                            instruction.OpCode = Invert(instruction.OpCode);
+                        }
                     }
                 }
 
                 // Replace the original target assembly with the mutated assembly
                 File.Delete(e.InputAssembly);
+                AssemblyFactory.SaveAssembly(conditionalDefinition.MethodDefinition.DeclaringType.Module.Assembly, outputFile);
                 File.Copy(outputFile, e.InputAssembly);
 
                 // Run the unit tests again, this time against the mutated assembly
@@ -112,6 +97,43 @@ namespace JesterDotNet.Presenter
 
             if (_testComplete != null)
                 _testComplete(this, new TestCompleteEventArgs(resultDtos));
+        }
+
+        private static OpCode Invert(OpCode code)
+        {
+            if (code == OpCodes.Brfalse)
+                return OpCodes.Brtrue;
+
+            if (code == OpCodes.Brfalse_S)
+                return OpCodes.Brtrue_S;
+
+            if (code == OpCodes.Brtrue)
+                return OpCodes.Brfalse;
+
+            if (code == OpCodes.Brtrue_S)
+                return OpCodes.Brfalse_S;
+            else
+            {
+                // Todo: Add inversions for remaining op codes
+                return OpCodes.Br;
+            }
+        }
+
+        private static bool IsConditional(Instruction instruction)
+        {
+            List<OpCode> conditionals = new List<OpCode>();
+            conditionals.AddRange(new OpCode[] 
+                {   
+                    OpCodes.Brfalse, OpCodes.Brfalse_S, OpCodes.Brtrue, OpCodes.Brtrue_S, 
+                    OpCodes.Beq, OpCodes.Beq_S, 
+                    OpCodes.Bge, OpCodes.Bge_S, OpCodes.Bge_Un,OpCodes.Bge_Un_S, OpCodes.Bgt, OpCodes.Bgt_S, 
+                    OpCodes.Bgt_S, OpCodes.Bgt_Un, OpCodes.Bgt_Un_S, 
+                    OpCodes.Ble, OpCodes.Ble_S, OpCodes.Ble_Un,OpCodes.Ble_Un_S, OpCodes.Blt, OpCodes.Blt_S, 
+                    OpCodes.Blt_S, OpCodes.Blt_Un, OpCodes.Blt_Un_S, 
+                    OpCodes.Bne_Un, OpCodes.Bne_Un_S
+                });
+
+            return conditionals.Contains(instruction.OpCode);
         }
 
         /// <summary>
@@ -152,17 +174,17 @@ namespace JesterDotNet.Presenter
             string[] foundConditionals;
             using (StreamReader reader = new StreamReader(ilStream))
             {
-                string[] conditionals = {"brtrue.s", "brfalse.s"};
+                string[] conditionals = { "brtrue.s", "brfalse.s" };
                 string ilString = reader.ReadToEnd();
-                string[] tokens = ilString.Split(new char[] {' '},
+                string[] tokens = ilString.Split(new char[] { ' ' },
                                                  StringSplitOptions.RemoveEmptyEntries);
 
-                foundConditionals = 
+                foundConditionals =
                     Array.FindAll(tokens,
                         delegate(string tok)
-                            {
-                                 return ((tok == conditionals[0]) || (tok == conditionals[1]));
-                            });
+                        {
+                            return ((tok == conditionals[0]) || (tok == conditionals[1]));
+                        });
             }
             return foundConditionals;
         }
