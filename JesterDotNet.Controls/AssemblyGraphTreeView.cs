@@ -9,9 +9,6 @@ namespace JesterDotNet.Controls
 {
     public partial class AssemblyGraphTreeView : UserControl
     {
-        private readonly IDictionary<OpCode, string>
-            _branchingOpCodes = new Dictionary<OpCode, string>();
-
         private readonly string Assembly = "imgAssembly";
         private readonly string Branch = "imgBranch";
         private readonly string Class = "imgClass";
@@ -24,7 +21,6 @@ namespace JesterDotNet.Controls
         public AssemblyGraphTreeView()
         {
             InitializeComponent();
-            PopulateBranchingOpCodes();
         }
 
         /// <summary>
@@ -74,6 +70,7 @@ namespace JesterDotNet.Controls
         /// </summary>
         public void LoadAssemblies(string[] fileNames)
         {
+            BranchingOpCodes opCodes = new BranchingOpCodes();
             treeView.Nodes.Clear();
 
             for (int theAssembly = 0; theAssembly < fileNames.Length; theAssembly++)
@@ -132,7 +129,7 @@ namespace JesterDotNet.Controls
                                      theInstruction < body.Instructions.Count;
                                      theInstruction++)
                                 {
-                                    if (_branchingOpCodes.ContainsKey(
+                                    if (opCodes.ContainsKey(
                                         body.Instructions[theInstruction].OpCode))
                                     {
                                         treeView.
@@ -142,11 +139,8 @@ namespace JesterDotNet.Controls
                                             Nodes[theMethod].
                                             Nodes.Add(
                                             CreateTreeNode(
-                                                _branchingOpCodes[
-                                                    body.Instructions[theInstruction].OpCode],
-                                                new ConditionalDefinition(methodDefinition,
-                                                                          theInstruction),
-                                                Branch));
+                                                opCodes[body.Instructions[theInstruction].OpCode].ToString(),
+                                                new ConditionalDefinition(methodDefinition, theInstruction), Branch));
                                     }
                                 }
                             }
@@ -175,39 +169,6 @@ namespace JesterDotNet.Controls
                 }
             }
             // TODO: We also need to check the parents (or graystate them if not all of their children are checked)
-        }
-
-        /// <summary>
-        /// Populates our collection of branching OpCodes so that we know which Op codes we're 
-        /// looking for.  Also stores the human readable text so that we can display a friendly 
-        /// name on the UI.
-        /// </summary>
-        private void PopulateBranchingOpCodes()
-        {
-            _branchingOpCodes.Add(OpCodes.Beq, Resources.BranchEqual);
-            _branchingOpCodes.Add(OpCodes.Beq_S, Resources.BranchEqual);
-            _branchingOpCodes.Add(OpCodes.Bge, Resources.BranchGreaterThanOrEqual);
-            _branchingOpCodes.Add(OpCodes.Bge_S, Resources.BranchGreaterThanOrEqual);
-            _branchingOpCodes.Add(OpCodes.Bge_Un, Resources.BranchGreaterThanOrEqual);
-            _branchingOpCodes.Add(OpCodes.Bge_Un_S, Resources.BranchGreaterThanOrEqual);
-            _branchingOpCodes.Add(OpCodes.Bgt, Resources.BranchGreaterThan);
-            _branchingOpCodes.Add(OpCodes.Bgt_S, Resources.BranchGreaterThan);
-            _branchingOpCodes.Add(OpCodes.Bgt_Un, Resources.BranchGreaterThan);
-            _branchingOpCodes.Add(OpCodes.Bgt_Un_S, Resources.BranchGreaterThan);
-            _branchingOpCodes.Add(OpCodes.Ble, Resources.BranchLessThanOrEqual);
-            _branchingOpCodes.Add(OpCodes.Ble_S, Resources.BranchLessThanOrEqual);
-            _branchingOpCodes.Add(OpCodes.Ble_Un, Resources.BranchLessThanOrEqual);
-            _branchingOpCodes.Add(OpCodes.Ble_Un_S, Resources.BranchLessThanOrEqual);
-            _branchingOpCodes.Add(OpCodes.Blt, Resources.BranchLessThan);
-            _branchingOpCodes.Add(OpCodes.Blt_S, Resources.BranchLessThan);
-            _branchingOpCodes.Add(OpCodes.Blt_Un, Resources.BranchLessThan);
-            _branchingOpCodes.Add(OpCodes.Blt_Un_S, Resources.BranchLessThan);
-            _branchingOpCodes.Add(OpCodes.Bne_Un, Resources.BranchNotEqual);
-            _branchingOpCodes.Add(OpCodes.Bne_Un_S, Resources.BranchNotEqual);
-            _branchingOpCodes.Add(OpCodes.Brfalse, Resources.BranchFalse);
-            _branchingOpCodes.Add(OpCodes.Brfalse_S, Resources.BranchFalse);
-            _branchingOpCodes.Add(OpCodes.Brtrue, Resources.BranchTrue);
-            _branchingOpCodes.Add(OpCodes.Brtrue_S, Resources.BranchTrue);
         }
 
         /// <summary>

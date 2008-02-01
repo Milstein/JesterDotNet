@@ -42,12 +42,8 @@
       <DependentUpon>Exceptions.resx</DependentUpon>
     </Compile>
     <Compile Include="FailingTestResult.cs" />
-    <Compile Include="ILAsm.cs" />
-    <Compile Include="ILDasm.cs" />
-    <Compile Include="ILParser.cs" />
     <Compile Include="ITestRunner.cs" />
     <Compile Include="MbUnitTestRunner.cs" />
-    <Compile Include="OperatorInversions.cs" />
     <Compile Include="PassingTestResult.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="PreferencesManager.cs" />

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using JesterDotNet.Model;
@@ -14,20 +13,15 @@ namespace JesterDotNet.Presenter
     public class JesterPresenter
     {
         #region Fields (Private)
-
-        private readonly IJesterView _view;
         private readonly Preferences _preferences = PreferencesManager.Preferences;
-
+        private readonly IJesterView _view;
         #endregion Fields (Private)
 
         #region Events (Private)
-
         private event EventHandler<TestCompleteEventArgs> _testComplete;
-
         #endregion Events (Private)
 
         #region Constructors (Public)
-
         /// <summary>
         /// Initializes a new instance of the <see cref="JesterPresenter"/> class.
         /// </summary>
@@ -37,21 +31,17 @@ namespace JesterDotNet.Presenter
             _view = view;
             _view.Run += OnViewRun;
         }
-
         #endregion Constructors (Public)
 
         #region Events (Public)
-
         public event EventHandler<TestCompleteEventArgs> TestComplete
         {
             add { _testComplete += value; }
             remove { _testComplete -= value; }
         }
-
         #endregion Events (Public)
 
         #region Event Handlers (Private)
-
         /// <summary>
         /// Called when <see cref="IJesterView.Run"/> event is fired.  Performs the 
         /// mutation.
@@ -63,6 +53,7 @@ namespace JesterDotNet.Presenter
         {
             // TODO: We can probably tighten up this for loop if we take a closer look at this loop
             IList<TestResultDto> resultDtos = new List<TestResultDto>();
+            BranchingOpCodes opCodes = new BranchingOpCodes();
             foreach (ConditionalDefinition conditionalDefinition in e.SelectedConditionals)
             {
                 string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
@@ -70,11 +61,11 @@ namespace JesterDotNet.Presenter
                 for (int i = 0; i < conditionalDefinition.MethodDefinition.Body.Instructions.Count; i++)
                 {
                     Instruction instruction = conditionalDefinition.MethodDefinition.Body.Instructions[i];
-                    if (IsConditional(instruction))
+                    if (opCodes.Contains(instruction.OpCode))
                     {
                         if (i == conditionalDefinition.InstructionNumber)
                         {
-                            instruction.OpCode = Invert(instruction.OpCode);
+                            instruction.OpCode = opCodes.Invert(instruction.OpCode);
                         }
                     }
                 }
@@ -99,43 +90,6 @@ namespace JesterDotNet.Presenter
                 _testComplete(this, new TestCompleteEventArgs(resultDtos));
         }
 
-        private static OpCode Invert(OpCode code)
-        {
-            if (code == OpCodes.Brfalse)
-                return OpCodes.Brtrue;
-
-            if (code == OpCodes.Brfalse_S)
-                return OpCodes.Brtrue_S;
-
-            if (code == OpCodes.Brtrue)
-                return OpCodes.Brfalse;
-
-            if (code == OpCodes.Brtrue_S)
-                return OpCodes.Brfalse_S;
-            else
-            {
-                // Todo: Add inversions for remaining op codes
-                return OpCodes.Br;
-            }
-        }
-
-        private static bool IsConditional(Instruction instruction)
-        {
-            List<OpCode> conditionals = new List<OpCode>();
-            conditionals.AddRange(new OpCode[] 
-                {   
-                    OpCodes.Brfalse, OpCodes.Brfalse_S, OpCodes.Brtrue, OpCodes.Brtrue_S, 
-                    OpCodes.Beq, OpCodes.Beq_S, 
-                    OpCodes.Bge, OpCodes.Bge_S, OpCodes.Bge_Un,OpCodes.Bge_Un_S, OpCodes.Bgt, OpCodes.Bgt_S, 
-                    OpCodes.Bgt_S, OpCodes.Bgt_Un, OpCodes.Bgt_Un_S, 
-                    OpCodes.Ble, OpCodes.Ble_S, OpCodes.Ble_Un,OpCodes.Ble_Un_S, OpCodes.Blt, OpCodes.Blt_S, 
-                    OpCodes.Blt_S, OpCodes.Blt_Un, OpCodes.Blt_Un_S, 
-                    OpCodes.Bne_Un, OpCodes.Bne_Un_S
-                });
-
-            return conditionals.Contains(instruction.OpCode);
-        }
-
         /// <summary>
         /// Returns the name of the output file, taking into account the extension of the
         /// given input assembly name.
@@ -158,7 +112,6 @@ namespace JesterDotNet.Presenter
 
             return outputFileName;
         }
-
         #endregion Event Handlers (Private)
 
         /// <summary>
@@ -174,17 +127,14 @@ namespace JesterDotNet.Presenter
             string[] foundConditionals;
             using (StreamReader reader = new StreamReader(ilStream))
             {
-                string[] conditionals = { "brtrue.s", "brfalse.s" };
+                string[] conditionals = {"brtrue.s", "brfalse.s"};
                 string ilString = reader.ReadToEnd();
-                string[] tokens = ilString.Split(new char[] { ' ' },
-                                                 StringSplitOptions.RemoveEmptyEntries);
+                string[] tokens = ilString.Split(new char[] {' '},
+                    StringSplitOptions.RemoveEmptyEntries);
 
                 foundConditionals =
                     Array.FindAll(tokens,
-                        delegate(string tok)
-                        {
-                            return ((tok == conditionals[0]) || (tok == conditionals[1]));
-                        });
+                        delegate(string tok) { return ((tok == conditionals[0]) || (tok == conditionals[1])); });
             }
             return foundConditionals;
         }

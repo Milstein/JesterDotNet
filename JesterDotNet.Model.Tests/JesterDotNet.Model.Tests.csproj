@@ -40,9 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILAsmTest.cs" />
-    <Compile Include="ILParserTest.cs" />
-    <Compile Include="ILDasmTest.cs" />
     <Compile Include="MbUnitTestRunnerTest.cs" />
     <Compile Include="PreferencesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

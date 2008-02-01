@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly : AssemblyDescription("")]
 [assembly : AssemblyConfiguration("")]
 [assembly : AssemblyCompany("")]
-[assembly : AssemblyProduct("Jseter.NET")]
+[assembly : AssemblyProduct("Jester.NET")]
 [assembly : AssemblyCopyright("Copyright © Jeremy Jarrell  2007")]
 [assembly : AssemblyTrademark("")]
 [assembly : AssemblyCulture("")]

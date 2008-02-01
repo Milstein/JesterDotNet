@@ -31,6 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MbUnit.Framework, Version=1.0.2700.29885, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5" />
+    <Reference Include="Mono.Cecil, Version=0.6.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Mono.Cecil.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.1.0.584, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Rhino.Mocks.dll</HintPath>
@@ -46,6 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JesterDotNet.Controls\JesterDotNet.Controls.csproj">
+      <Project>{9879AF07-1823-4FC4-B967-1E8565A25D1A}</Project>
+      <Name>JesterDotNet.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JesterDotNet.Model\JesterDotNet.Model.csproj">
       <Project>{3AA92C0B-1586-43C0-A1C2-54719DCA7CC6}</Project>
       <Name>JesterDotNet.Model</Name>

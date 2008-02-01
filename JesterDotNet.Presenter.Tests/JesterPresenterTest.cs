@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using JesterDotNet.Model;
 using MbUnit.Framework;
+using Mono.Cecil;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
@@ -41,13 +42,9 @@ namespace JesterDotNet.Presenter.Tests
             {
                 JesterPresenter presenter = new JesterPresenter(view);
                 presenter.TestComplete +=
-                    delegate(object sender, TestCompleteEventArgs e)
-                    {
-                        testResults = e.TestResults;
-                    };
+                    delegate(object sender, TestCompleteEventArgs e) { testResults = e.TestResults; };
 
-                runEvent.Raise(presenter,
-                               new RunEventArgs(targetAssembly, testAssembly, null));
+                runEvent.Raise(presenter, new RunEventArgs(targetAssembly, testAssembly, GetConditionals(targetAssembly)));
             }
 
             int numberOfFailingTests = 0;
@@ -58,28 +55,32 @@ namespace JesterDotNet.Presenter.Tests
                     numberOfFailingTests++;
                 }
             }
-            Assert.AreEqual(2, numberOfFailingTests,
+            Assert.AreEqual(3, numberOfFailingTests,
                 "After the inversion, two of the tests should fail.");
         }
 
         /// <summary>
-        /// Ensures that a know set of conditional IL operators can be extracted from a 
-        /// given stream.
+        /// Gets all conditionals found in the given assemlby.
         /// </summary>
-        [Test]
-        [ExtractResource("JesterDotNet.Presenter.Tests.SampleData.DemoAppWithConditionals.exe")]
-        public void Can_extract_conditionals_from_an_assembly()
+        /// <param name="assemblyName">The assembly from which to retrieve the conditionals.</param>
+        /// <returns>An enumeration of all conditionals found in the given assembly.</returns>
+        private IEnumerable<ConditionalDefinition> GetConditionals(string assemblyName)
         {
-            MockRepository repository = new MockRepository();
-            IJesterView view = repository.CreateMock<IJesterView>();
+            BranchingOpCodes codes = new BranchingOpCodes();
+            IList<ConditionalDefinition> conditionals = new List<ConditionalDefinition>();
 
-            JesterPresenter presenter = new JesterPresenter(view);
-            ILDasm dasm = new ILDasm(ExtractResourceAttribute.Stream);
-            dasm.Invoke();
-            string[] foundConditionals =
-                presenter.ExtractConditionals(dasm.OutputIL);
+            AssemblyDefinition assembly = AssemblyFactory.GetAssembly(assemblyName);
+            foreach (ModuleDefinition module in assembly.Modules)
+                foreach (TypeDefinition type in module.Types)
+                    foreach (MethodDefinition method in type.Methods)
+                        if (method.HasBody)
+                        {
+                            for (int i = 0; i < method.Body.Instructions.Count; i++)
+                                if (codes.ContainsKey(method.Body.Instructions[i].OpCode))
+                                    conditionals.Add(new ConditionalDefinition(method, i));
+                        }
 
-            Assert.AreEqual(3, foundConditionals.Length);
+            return conditionals;
         }
 
         /// <summary>
