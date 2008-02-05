@@ -56,6 +56,7 @@ namespace JesterDotNet.Forms
             this.targetAssemblyTreeView = new JesterDotNet.Controls.AssemblyGraphTreeView();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.mainMenuStrip.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
@@ -285,6 +286,11 @@ namespace JesterDotNet.Forms
             this.tableLayoutPanel.Size = new System.Drawing.Size(841, 464);
             this.tableLayoutPanel.TabIndex = 15;
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -332,6 +338,7 @@ namespace JesterDotNet.Forms
         private System.Windows.Forms.ColumnHeader messageColumnHeader;
         private System.Windows.Forms.ImageList mutationErrorsImageList;
         private System.Windows.Forms.ColumnHeader errorIconColumnHeader;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
 	}
 }
 

@@ -60,7 +60,7 @@ namespace JesterDotNet.Presenter.Tests
 
             Assert.AreEqual("targetAssembly.dll", project.TargetAssemblyPath);
         }
-
+        
         /// <summary>
         /// Ensures that the test assembly path can be properly saved in and retrieved 
         /// from the project.

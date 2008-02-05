@@ -85,8 +85,7 @@ namespace JesterDotNet.Forms
         /// event data.</param>
         private void okButton_Click(object sender, EventArgs e)
         {
-            JesterProject project = new JesterProject(targetAssemblyTextBox.Text,
-                                         testAssemblyTextBox.Text);
+            JesterProject project = new JesterProject(targetAssemblyTextBox.Text, testAssemblyTextBox.Text);
             _projectFilePath = saveAsTextBox.Text;
 
             JesterProjectSerializer serializer = new JesterProjectSerializer();

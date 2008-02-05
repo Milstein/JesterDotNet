@@ -12,7 +12,7 @@ namespace JesterDotNet.Forms
     {
         private string _shadowedTargetAssembly;
         private string _shadowedTestAssembly;
-
+        
         #region Constructors (Public)
 
         /// <summary>
@@ -102,11 +102,7 @@ namespace JesterDotNet.Forms
         /// event data.</param>
         private void RunButton_Click(object sender, EventArgs e)
         {
-            ClearProgressBar();
-
-            if (Run != null)
-                Run(this, new RunEventArgs(_shadowedTargetAssembly, _shadowedTestAssembly,
-                    targetAssemblyTreeView.SelectedConditionals));
+            backgroundWorker.RunWorkerAsync();
         }
 
         /// <summary>
@@ -168,7 +164,6 @@ namespace JesterDotNet.Forms
                 aboutBoxForm.ShowDialog(this);
             }
         }
-
         #endregion Event Handlers
 
         /// <summary>
@@ -192,6 +187,28 @@ namespace JesterDotNet.Forms
         {
             progressBar.Value = 0;
             progressBar.Maximum = targetAssemblyTreeView.SelectedConditionals.Count;
+        }
+
+        private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            ClearProgressBar();
+            bool locked = true;
+            SetUILock(locked);
+
+            if (Run != null)
+                Run(this, new RunEventArgs(_shadowedTargetAssembly, _shadowedTestAssembly,
+                    targetAssemblyTreeView.SelectedConditionals));
+        }
+
+        private void SetUILock(bool locked)
+        {
+            runButton.Enabled = !(locked);
+        }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            bool locked = false;
+            SetUILock(locked);
         }
     }
 }
