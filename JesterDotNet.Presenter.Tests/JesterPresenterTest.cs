@@ -41,8 +41,8 @@ namespace JesterDotNet.Presenter.Tests
             using (repository.Playback())
             {
                 JesterPresenter presenter = new JesterPresenter(view);
-                presenter.TestComplete +=
-                    delegate(object sender, TestCompleteEventArgs e) { testResults = e.TestResults; };
+                presenter.MutationComplete +=
+                    delegate(object sender, MutationCompleteEventArgs e) { testResults = e.TestResults; };
 
                 runEvent.Raise(presenter, new RunEventArgs(targetAssembly, testAssembly, GetConditionals(targetAssembly)));
             }
@@ -59,15 +59,16 @@ namespace JesterDotNet.Presenter.Tests
                 "After the inversion, two of the tests should fail.");
         }
 
+
         /// <summary>
         /// Gets all conditionals found in the given assemlby.
         /// </summary>
         /// <param name="assemblyName">The assembly from which to retrieve the conditionals.</param>
         /// <returns>An enumeration of all conditionals found in the given assembly.</returns>
-        private IEnumerable<ConditionalDefinition> GetConditionals(string assemblyName)
+        private IEnumerable<ConditionalDefinitionDto> GetConditionals(string assemblyName)
         {
             BranchingOpCodes codes = new BranchingOpCodes();
-            IList<ConditionalDefinition> conditionals = new List<ConditionalDefinition>();
+            IList<ConditionalDefinitionDto> conditionals = new List<ConditionalDefinitionDto>();
 
             AssemblyDefinition assembly = AssemblyFactory.GetAssembly(assemblyName);
             foreach (ModuleDefinition module in assembly.Modules)
@@ -77,7 +78,7 @@ namespace JesterDotNet.Presenter.Tests
                         {
                             for (int i = 0; i < method.Body.Instructions.Count; i++)
                                 if (codes.ContainsKey(method.Body.Instructions[i].OpCode))
-                                    conditionals.Add(new ConditionalDefinition(method, i));
+                                    conditionals.Add(new ConditionalDefinitionDto(method, i));
                         }
 
             return conditionals;

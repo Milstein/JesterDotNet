@@ -70,8 +70,6 @@ namespace JesterDotNet.Model
         {
             try
             {
-                // TODO: Look at the result flag (success or failure) of each test result
-                // and determine the appropriate object to create
                 _reader.MoveToAttribute("name");
                 string name = _reader.Value;
 
@@ -90,7 +88,7 @@ namespace JesterDotNet.Model
                     MoveToElement("message");
                     string message = _reader.ReadElementContentAsString();
 
-                    return new FailingTestResult(name, exception, message);
+                    return new FailingTestResult(name, exception, message, null);
                 }
             }
             catch (InvalidOperationException )

@@ -1,5 +1,8 @@
 *How are we going to ensure that prefs are saved?  Should it implement IDisposable and save on dispose?
 *Try displaying the types by namespace in the assembly graph viewer (CeCil looks like it may have this ability)
+*Need to implment the progress bar
+*Need to figure out how to associate the failing test results with the conditional definitions
+*Review the remaining TODOs
 
 *Try and figure out how to read PDBs so that we can display the source code in the app
 *Refactor MbUnit related code into a separate assembly to reinforce the plugin architecture

@@ -23,6 +23,7 @@ namespace JesterDotNet.Forms
             InitializeComponent();
             JesterPresenter presenter = new JesterPresenter(this);
             presenter.TestComplete += presenter_TestComplete;
+            presenter.MutationComplete += presenter_MutationComplete;
         }
 
         #endregion Constructors (Public)
@@ -62,13 +63,13 @@ namespace JesterDotNet.Forms
         }
 
         /// <summary>
-        /// Handles the TestComplete event of the presenter control.  Populates the list 
+        /// Handles the MutationComplete event of the presenter control.  Populates the list 
         /// view with the results of the mutation test.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TestCompleteEventArgs"/> instance containing 
+        /// <param name="e">The <see cref="MutationCompleteEventArgs"/> instance containing 
         /// the event data.</param>
-        void presenter_TestComplete(object sender, TestCompleteEventArgs e)
+        void presenter_MutationComplete(object sender, MutationCompleteEventArgs e)
         {
             foreach (TestResultDto result in e.TestResults)
             {
@@ -88,21 +89,9 @@ namespace JesterDotNet.Forms
                 columnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
-        /// <summary>
-        /// Reconstitutes the project file from the given path and populates the 
-        /// application with the referenced items. 
-        /// </summary>
-        /// <param name="fileName">The path of the project containing the desired 
-        /// project.</param>
-        private void LoadProjectFile(string fileName)
+        private void presenter_TestComplete(object sender, EventArgs e)
         {
-            JesterProjectSerializer serializer = new JesterProjectSerializer();
-            JesterProject project = serializer.Deserialize(fileName);
-            
-            targetAssemblyTreeView.LoadAssemblies(new string[] { project.TargetAssemblyPath });
-            
-            _shadowedTargetAssembly = ShadowCopyAssembly(project.TargetAssemblyPath);
-            _shadowedTestAssembly = ShadowCopyAssembly(project.TestAssemblyPath);
+            progressBar.Value++;
         }
 
         /// <summary>
@@ -113,12 +102,12 @@ namespace JesterDotNet.Forms
         /// event data.</param>
         private void RunButton_Click(object sender, EventArgs e)
         {
+            ClearProgressBar();
+
             if (Run != null)
                 Run(this, new RunEventArgs(_shadowedTargetAssembly, _shadowedTestAssembly,
                     targetAssemblyTreeView.SelectedConditionals));
         }
-
-        #endregion Event Handlers
 
         /// <summary>
         /// Copies the given assmembly to an area where it can be accessed.
@@ -178,6 +167,31 @@ namespace JesterDotNet.Forms
             {
                 aboutBoxForm.ShowDialog(this);
             }
+        }
+
+        #endregion Event Handlers
+
+        /// <summary>
+        /// Reconstitutes the project file from the given path and populates the 
+        /// application with the referenced items. 
+        /// </summary>
+        /// <param name="fileName">The path of the project containing the desired 
+        /// project.</param>
+        private void LoadProjectFile(string fileName)
+        {
+            JesterProjectSerializer serializer = new JesterProjectSerializer();
+            JesterProject project = serializer.Deserialize(fileName);
+
+            targetAssemblyTreeView.LoadAssemblies(new string[] { project.TargetAssemblyPath });
+
+            _shadowedTargetAssembly = ShadowCopyAssembly(project.TargetAssemblyPath);
+            _shadowedTestAssembly = ShadowCopyAssembly(project.TestAssemblyPath);
+        }
+
+        private void ClearProgressBar()
+        {
+            progressBar.Value = 0;
+            progressBar.Maximum = targetAssemblyTreeView.SelectedConditionals.Count;
         }
     }
 }

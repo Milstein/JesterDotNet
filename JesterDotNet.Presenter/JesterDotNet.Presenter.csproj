@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BranchingOpCodes.cs" />
-    <Compile Include="ConditionalDefinition.cs" />
+    <Compile Include="ConditionalDefinitionDto.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="FailingTestResultDto.cs" />
     <Compile Include="IJesterView.cs" />
@@ -52,7 +52,7 @@
     <Compile Include="PreferencesUpdatedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunEventArgs.cs" />
-    <Compile Include="TestCompleteEventArgs.cs" />
+    <Compile Include="MutationCompleteEventArgs.cs" />
     <Compile Include="PassingTestResultDto.cs" />
     <Compile Include="TestResultDto.cs" />
   </ItemGroup>

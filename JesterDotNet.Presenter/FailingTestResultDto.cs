@@ -21,5 +21,10 @@ namespace JesterDotNet.Presenter
         {
             get { return _result.Message; }
         }
+
+        public ConditionalDefinitionDto ConditionalDefinition
+        {
+            get { return new ConditionalDefinitionDto(_result.ConditionalDefinition); }
+        }
     }
 }

@@ -54,7 +54,7 @@ namespace JesterDotNet.Forms
             this.messageColumnHeader = new System.Windows.Forms.ColumnHeader();
             this.mutationErrorsImageList = new System.Windows.Forms.ImageList(this.components);
             this.targetAssemblyTreeView = new JesterDotNet.Controls.AssemblyGraphTreeView();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.mainMenuStrip.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
@@ -254,14 +254,14 @@ namespace JesterDotNet.Forms
             this.targetAssemblyTreeView.Size = new System.Drawing.Size(246, 458);
             this.targetAssemblyTreeView.TabIndex = 12;
             // 
-            // progressBar1
+            // progressBar
             // 
-            this.tableLayoutPanel.SetColumnSpan(this.progressBar1, 3);
-            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.progressBar1.Location = new System.Drawing.Point(255, 54);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(583, 26);
-            this.progressBar1.TabIndex = 14;
+            this.tableLayoutPanel.SetColumnSpan(this.progressBar, 3);
+            this.progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.progressBar.Location = new System.Drawing.Point(255, 54);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(583, 26);
+            this.progressBar.TabIndex = 14;
             // 
             // tableLayoutPanel
             // 
@@ -272,7 +272,7 @@ namespace JesterDotNet.Forms
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.676551F));
             this.tableLayoutPanel.Controls.Add(this.runButton, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.targetAssemblyTreeView, 0, 0);
-            this.tableLayoutPanel.Controls.Add(this.progressBar1, 1, 1);
+            this.tableLayoutPanel.Controls.Add(this.progressBar, 1, 1);
             this.tableLayoutPanel.Controls.Add(this.mutationErrorsListView, 1, 2);
             this.tableLayoutPanel.Controls.Add(this.cancelButton, 3, 0);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -325,7 +325,7 @@ namespace JesterDotNet.Forms
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.ListView mutationErrorsListView;
         private JesterDotNet.Controls.AssemblyGraphTreeView targetAssemblyTreeView;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private System.Windows.Forms.ColumnHeader testNameColumnHeader;
         private System.Windows.Forms.ColumnHeader exceptionColumnHeader;

@@ -27,23 +27,23 @@ namespace JesterDotNet.Controls
         /// Gets an enumeration of the conditionals that the user has selected in the control.
         /// </summary>
         /// <value>an enumeration of the conditionals that the user has selected in the control.</value>
-        public IEnumerable<ConditionalDefinition> SelectedConditionals
+        public IList<ConditionalDefinitionDto> SelectedConditionals
         {
             get
             {
                 // Get all checked tree nodes recursively
                 // Return a collection of the ones that are conditionals
-                IList<ConditionalDefinition> selectedConditionals =
-                    new List<ConditionalDefinition>();
+                IList<ConditionalDefinitionDto> selectedConditionals =
+                    new List<ConditionalDefinitionDto>();
                 foreach (TreeNode node in treeView.Nodes)
                 {
                     foreach (TreeNode selectedNode in GetSelectedSubNodes(node))
                     {
                         // selected conditionals add stuff
-                        ConditionalDefinition conditionalDefinition =
-                            selectedNode.Tag as ConditionalDefinition;
+                        ConditionalDefinitionDto conditionalDefinition =
+                            selectedNode.Tag as ConditionalDefinitionDto;
                         if (conditionalDefinition != null)
-                            selectedConditionals.Add((ConditionalDefinition)selectedNode.Tag);
+                            selectedConditionals.Add((ConditionalDefinitionDto)selectedNode.Tag);
                     }
                 }
                 return selectedConditionals;
@@ -140,7 +140,7 @@ namespace JesterDotNet.Controls
                                             Nodes.Add(
                                             CreateTreeNode(
                                                 opCodes[body.Instructions[theInstruction].OpCode].ToString(),
-                                                new ConditionalDefinition(methodDefinition, theInstruction), Branch));
+                                                new ConditionalDefinitionDto(methodDefinition, theInstruction), Branch));
                                     }
                                 }
                             }

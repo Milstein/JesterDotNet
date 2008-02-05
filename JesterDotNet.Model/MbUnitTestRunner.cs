@@ -12,7 +12,7 @@ namespace JesterDotNet.Model
         // TODO: This should be a directly inside of a Jester specific directory
         private readonly string _reportFolder = @"C:\temp";
         private IEnumerable<TestResult> _testResults;
-        Preferences _preferences = PreferencesManager.Preferences;
+        readonly Preferences _preferences = PreferencesManager.Preferences;
 
         public IEnumerable<TestResult> TestResults
         {

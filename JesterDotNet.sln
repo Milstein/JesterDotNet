@@ -5,7 +5,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 	ProjectSection(SolutionItems) = preProject
 		SolutionItems\BurnDownList.txt = SolutionItems\BurnDownList.txt
 		SolutionItems\JesterDotNet.build = SolutionItems\JesterDotNet.build
-		SolutionItems\User Stories.txt = SolutionItems\User Stories.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Presenter", "JesterDotNet.Presenter\JesterDotNet.Presenter.csproj", "{235B8F67-F452-48C5-8A76-2C918742C55E}"

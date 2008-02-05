@@ -4,12 +4,14 @@ namespace JesterDotNet.Model
     {
         private readonly string _exception;
         private readonly string _message;
+        private readonly ConditionalDefinition _conditionalDefinition;
 
-        public FailingTestResult(string name, string exception, string message)
+        public FailingTestResult(string name, string exception, string message, ConditionalDefinition conditionalDefinition)
             : base(name)
         {
             _exception = exception;
             _message = message;
+            _conditionalDefinition = conditionalDefinition;
         }
 
         public string Exception
@@ -20,6 +22,11 @@ namespace JesterDotNet.Model
         public string Message
         {
             get { return _message; }
+        }
+
+        public ConditionalDefinition ConditionalDefinition
+        {
+            get { return _conditionalDefinition; }
         }
     }
 }

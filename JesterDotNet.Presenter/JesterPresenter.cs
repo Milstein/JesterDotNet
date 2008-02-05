@@ -18,7 +18,8 @@ namespace JesterDotNet.Presenter
         #endregion Fields (Private)
 
         #region Events (Private)
-        private event EventHandler<TestCompleteEventArgs> _testComplete;
+        private event EventHandler<MutationCompleteEventArgs> _mutationComplete;
+        private event EventHandler<EventArgs> _testComplete;
         #endregion Events (Private)
 
         #region Constructors (Public)
@@ -34,7 +35,13 @@ namespace JesterDotNet.Presenter
         #endregion Constructors (Public)
 
         #region Events (Public)
-        public event EventHandler<TestCompleteEventArgs> TestComplete
+        public event EventHandler<MutationCompleteEventArgs> MutationComplete
+        {
+            add { _mutationComplete += value; }
+            remove { _mutationComplete -= value; }
+        }
+
+        public event EventHandler<EventArgs> TestComplete
         {
             add { _testComplete += value; }
             remove { _testComplete -= value; }
@@ -54,7 +61,7 @@ namespace JesterDotNet.Presenter
             // TODO: We can probably tighten up this for loop if we take a closer look at this loop
             IList<TestResultDto> resultDtos = new List<TestResultDto>();
             BranchingOpCodes opCodes = new BranchingOpCodes();
-            foreach (ConditionalDefinition conditionalDefinition in e.SelectedConditionals)
+            foreach (ConditionalDefinitionDto conditionalDefinition in e.SelectedConditionals)
             {
                 string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
 
@@ -84,10 +91,13 @@ namespace JesterDotNet.Presenter
                         resultDtos.Add(new PassingTestResultDto((PassingTestResult)result));
                     else
                         resultDtos.Add(new FailingTestResultDto((FailingTestResult)result));
+
+                if (_testComplete != null)
+                    _testComplete(this, EventArgs.Empty);
             }
 
-            if (_testComplete != null)
-                _testComplete(this, new TestCompleteEventArgs(resultDtos));
+            if (_mutationComplete != null)
+                _mutationComplete(this, new MutationCompleteEventArgs(resultDtos));
         }
 
         /// <summary>

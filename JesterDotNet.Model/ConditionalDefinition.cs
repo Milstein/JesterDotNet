@@ -1,6 +1,6 @@
 using Mono.Cecil;
 
-namespace JesterDotNet.Presenter
+namespace JesterDotNet.Model
 {
     public class ConditionalDefinition
     {

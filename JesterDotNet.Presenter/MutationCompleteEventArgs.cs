@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace JesterDotNet.Presenter
 {
-    public class TestCompleteEventArgs : EventArgs
+    public class MutationCompleteEventArgs : EventArgs
     {
         private readonly IEnumerable<TestResultDto> _testResults;
 
-        public TestCompleteEventArgs(IEnumerable<TestResultDto> testResults)
+        public MutationCompleteEventArgs(IEnumerable<TestResultDto> testResults)
         {
             _testResults = testResults;
         }
