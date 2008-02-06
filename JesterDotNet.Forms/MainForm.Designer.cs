@@ -286,11 +286,6 @@ namespace JesterDotNet.Forms
             this.tableLayoutPanel.Size = new System.Drawing.Size(841, 464);
             this.tableLayoutPanel.TabIndex = 15;
             // 
-            // backgroundWorker
-            // 
-            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
-            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

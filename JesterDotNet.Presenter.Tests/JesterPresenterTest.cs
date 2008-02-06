@@ -32,7 +32,7 @@ namespace JesterDotNet.Presenter.Tests
             MockRepository repository = new MockRepository();
             IJesterView view = repository.CreateMock<IJesterView>();
             IEventRaiser runEvent;
-            IEnumerable<TestResultDto> testResults = null;
+            IEnumerable<MutationDto> mutationResults = null;
             using (repository.Record())
             {
                 view.Run += null;
@@ -42,13 +42,13 @@ namespace JesterDotNet.Presenter.Tests
             {
                 JesterPresenter presenter = new JesterPresenter(view);
                 presenter.MutationComplete +=
-                    delegate(object sender, MutationCompleteEventArgs e) { testResults = e.TestResults; };
+                    delegate(object sender, MutationCompleteEventArgs e) { mutationResults = e.MutationResults; };
 
-                runEvent.Raise(presenter, new RunEventArgs(targetAssembly, testAssembly, GetConditionals(targetAssembly)));
+                runEvent.Raise(presenter, new RunEventArgs(targetAssembly, testAssembly, GetMutations(targetAssembly)));
             }
 
             int numberOfFailingTests = 0;
-            foreach (TestResultDto result in testResults)
+            foreach (MutationDto result in mutationResults)
             {
                 if (result is FailingTestResultDto)
                 {
@@ -61,14 +61,14 @@ namespace JesterDotNet.Presenter.Tests
 
 
         /// <summary>
-        /// Gets all conditionals found in the given assemlby.
+        /// Gets mutations containing all conditionals found in the given assemlby.
         /// </summary>
         /// <param name="assemblyName">The assembly from which to retrieve the conditionals.</param>
-        /// <returns>An enumeration of all conditionals found in the given assembly.</returns>
-        private IEnumerable<ConditionalDefinitionDto> GetConditionals(string assemblyName)
+        /// <returns>An enumeration of mutations containing all conditionals found in the given assembly.</returns>
+        private IEnumerable<MutationDto> GetMutations(string assemblyName)
         {
             BranchingOpCodes codes = new BranchingOpCodes();
-            IList<ConditionalDefinitionDto> conditionals = new List<ConditionalDefinitionDto>();
+            IList<MutationDto> conditionals = new List<MutationDto>();
 
             AssemblyDefinition assembly = AssemblyFactory.GetAssembly(assemblyName);
             foreach (ModuleDefinition module in assembly.Modules)
@@ -78,7 +78,7 @@ namespace JesterDotNet.Presenter.Tests
                         {
                             for (int i = 0; i < method.Body.Instructions.Count; i++)
                                 if (codes.ContainsKey(method.Body.Instructions[i].OpCode))
-                                    conditionals.Add(new ConditionalDefinitionDto(method, i));
+                                    conditionals.Add(new MutationDto(new ConditionalDefinitionDto(method, i), new List<TestResultDto>()));
                         }
 
             return conditionals;

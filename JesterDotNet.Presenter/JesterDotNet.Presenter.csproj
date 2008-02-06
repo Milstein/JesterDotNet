@@ -48,6 +48,7 @@
     <Compile Include="JesterPresenter.cs" />
     <Compile Include="JesterProject.cs" />
     <Compile Include="JesterProjectSerializer.cs" />
+    <Compile Include="MutationDto.cs" />
     <Compile Include="PreferencesPresenter.cs" />
     <Compile Include="PreferencesUpdatedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

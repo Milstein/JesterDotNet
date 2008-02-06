@@ -10,7 +10,7 @@ namespace JesterDotNet.Presenter
     {
         #region Fields (Private)
         private readonly string _inputAssembly;
-        private readonly IEnumerable<ConditionalDefinitionDto> _selectedConditionals;
+        private readonly IEnumerable<MutationDto> _selectedMutations;
         private readonly string _testAssembly;
         #endregion Fields (Private)
 
@@ -20,14 +20,13 @@ namespace JesterDotNet.Presenter
         /// </summary>
         /// <param name="inputAssembly">The assembly to mutate.</param>
         /// <param name="testAssembly">The assembly which contains the tests to run.</param>
-        /// <param name="selectedConditionals">The conditionals which the user has selected to 
-        /// mutate.</param>
+        /// <param name="selectedMutations">The mutations which the user has selected.</param>
         public RunEventArgs(string inputAssembly, string testAssembly,
-            IEnumerable<ConditionalDefinitionDto> selectedConditionals)
+            IEnumerable<MutationDto> selectedMutations)
         {
             _inputAssembly = inputAssembly;
             _testAssembly = testAssembly;
-            _selectedConditionals = selectedConditionals;
+            _selectedMutations = selectedMutations;
         }
         #endregion Constructors (Public)
 
@@ -51,12 +50,12 @@ namespace JesterDotNet.Presenter
         }
 
         /// <summary>
-        /// Gets the conditionals that the user has selected to mutate.
+        /// Gets the mutations that the user has selected.
         /// </summary>
-        /// <value>The conditionals that the user has selected to mutate.</value>
-        public IEnumerable<ConditionalDefinitionDto> SelectedConditionals
+        /// <value>the mutations that the user has selected.</value>
+        public IEnumerable<MutationDto> SelectedMutations
         {
-            get { return _selectedConditionals; }
+            get { return _selectedMutations; }
         }
         #endregion Properties (Public)
     }

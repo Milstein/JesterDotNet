@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -14,6 +15,7 @@ namespace JesterDotNet.Controls
         private readonly string Class = "imgClass";
         private readonly string Method = "imgMethod";
         private readonly string Module = "imgModule";
+        private readonly string Interface = "imgInterface";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyGraphTreeView"/> class.
@@ -50,18 +52,11 @@ namespace JesterDotNet.Controls
             }
         }
 
-        private IEnumerable<TreeNode> GetSelectedSubNodes(TreeNode parentNode)
+        private event EventHandler<EventArgs> _nodeSelectionChanged;
+        public event EventHandler<EventArgs> NodeSelectionChanged
         {
-            List<TreeNode> selectedNodes = new List<TreeNode>();
-            foreach (TreeNode childNode in parentNode.Nodes)
-            {
-                if (childNode.Checked)
-                {
-                    selectedNodes.Add(childNode);
-                    selectedNodes.AddRange(GetSelectedSubNodes(childNode));
-                }
-            }
-            return selectedNodes;
+            add { _nodeSelectionChanged += value; }
+            remove { _nodeSelectionChanged -= value; }
         }
 
         /// <summary>
@@ -101,7 +96,7 @@ namespace JesterDotNet.Controls
                         // Add a node to the tree to represent the class
                         treeView.Nodes[theAssembly].Nodes[theModule].Nodes.Add(
                             CreateTreeNode(inputAssembly.Modules[theModule].Types[theType].FullName,
-                                           inputAssembly.Modules[theModule].Types[theType], Class));
+                                inputAssembly.Modules[theModule].Types[theType], Class));
 
                         // Create a test method for each method in this type
                         for (int theMethod = 0;
@@ -152,6 +147,20 @@ namespace JesterDotNet.Controls
             }
         }
 
+        private IEnumerable<TreeNode> GetSelectedSubNodes(TreeNode parentNode)
+        {
+            List<TreeNode> selectedNodes = new List<TreeNode>();
+            foreach (TreeNode childNode in parentNode.Nodes)
+            {
+                if (childNode.Checked)
+                {
+                    selectedNodes.Add(childNode);
+                    selectedNodes.AddRange(GetSelectedSubNodes(childNode));
+                }
+            }
+            return selectedNodes;
+        }
+
         /// <summary>
         /// Applies the check state of the given 
         /// <see cref="System.Windows.Forms.TreeNode">TreeNode</see> to all of its 
@@ -183,8 +192,6 @@ namespace JesterDotNet.Controls
         {
             TreeNode treeNode = new TreeNode(text);
             treeNode.Tag = memberDefinition;
-            treeNode.ImageIndex = objectIconsImageList.Images.IndexOfKey(imageKey);
-            treeNode.SelectedImageIndex = objectIconsImageList.Images.IndexOfKey(imageKey);
 
             treeNode.Checked = !(IsInterface(memberDefinition));
             treeNode.Checked = !(IsAbstractMethod(memberDefinition));
@@ -193,10 +200,14 @@ namespace JesterDotNet.Controls
                 treeNode.Checked = false;
                 treeNode.NodeFont = new Font(treeView.Font, FontStyle.Italic);
                 treeNode.ForeColor = SystemColors.GrayText;
+                treeNode.ImageIndex = objectIconsImageList.Images.IndexOfKey(Interface);
+                treeNode.SelectedImageIndex = objectIconsImageList.Images.IndexOfKey(Interface);
             }
             else
             {
                 treeNode.Checked = true;
+                treeNode.ImageIndex = objectIconsImageList.Images.IndexOfKey(imageKey);
+                treeNode.SelectedImageIndex = objectIconsImageList.Images.IndexOfKey(imageKey);
             }
 
             return treeNode;

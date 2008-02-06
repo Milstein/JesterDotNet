@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using JesterDotNet.Model;
 using Mono.Cecil;
@@ -59,18 +58,17 @@ namespace JesterDotNet.Presenter
         private void OnViewRun(object sender, RunEventArgs e)
         {
             // TODO: We can probably tighten up this for loop if we take a closer look at this loop
-            IList<TestResultDto> resultDtos = new List<TestResultDto>();
             BranchingOpCodes opCodes = new BranchingOpCodes();
-            foreach (ConditionalDefinitionDto conditionalDefinition in e.SelectedConditionals)
+            foreach (MutationDto mutation in e.SelectedMutations)
             {
                 string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
 
-                for (int i = 0; i < conditionalDefinition.MethodDefinition.Body.Instructions.Count; i++)
+                for (int i = 0; i < mutation.Conditional.MethodDefinition.Body.Instructions.Count; i++)
                 {
-                    Instruction instruction = conditionalDefinition.MethodDefinition.Body.Instructions[i];
+                    Instruction instruction = mutation.Conditional.MethodDefinition.Body.Instructions[i];
                     if (opCodes.Contains(instruction.OpCode))
                     {
-                        if (i == conditionalDefinition.InstructionNumber)
+                        if (i == mutation.Conditional.InstructionNumber)
                         {
                             instruction.OpCode = opCodes.Invert(instruction.OpCode);
                         }
@@ -79,7 +77,7 @@ namespace JesterDotNet.Presenter
 
                 // Replace the original target assembly with the mutated assembly
                 File.Delete(e.InputAssembly);
-                AssemblyFactory.SaveAssembly(conditionalDefinition.MethodDefinition.DeclaringType.Module.Assembly, outputFile);
+                AssemblyFactory.SaveAssembly(mutation.Conditional.MethodDefinition.DeclaringType.Module.Assembly, outputFile);
                 File.Copy(outputFile, e.InputAssembly);
 
                 // Run the unit tests again, this time against the mutated assembly
@@ -88,16 +86,17 @@ namespace JesterDotNet.Presenter
 
                 foreach (TestResult result in runner.TestResults)
                     if (result is PassingTestResult)
-                        resultDtos.Add(new PassingTestResultDto((PassingTestResult)result));
+                        mutation.TestResults.Add(new PassingTestResultDto((PassingTestResult)result));
+
                     else
-                        resultDtos.Add(new FailingTestResultDto((FailingTestResult)result));
+                        mutation.TestResults.Add(new FailingTestResultDto((FailingTestResult)result));
 
                 if (_testComplete != null)
                     _testComplete(this, EventArgs.Empty);
             }
 
             if (_mutationComplete != null)
-                _mutationComplete(this, new MutationCompleteEventArgs(resultDtos));
+                _mutationComplete(this, new MutationCompleteEventArgs(e.SelectedMutations));
         }
 
         /// <summary>

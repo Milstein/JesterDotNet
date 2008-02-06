@@ -58,6 +58,7 @@ namespace JesterDotNet.Controls
             this.objectIconsImageList.Images.SetKeyName(3, "imgClass");
             this.objectIconsImageList.Images.SetKeyName(4, "imgMethod");
             this.objectIconsImageList.Images.SetKeyName(5, "imgBranch");
+            this.objectIconsImageList.Images.SetKeyName(6, "imgInterface");
             // 
             // AssemblyGraphTreeView
             // 

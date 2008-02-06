@@ -5,16 +5,16 @@ namespace JesterDotNet.Presenter
 {
     public class MutationCompleteEventArgs : EventArgs
     {
-        private readonly IEnumerable<TestResultDto> _testResults;
+        private readonly IEnumerable<MutationDto> _mutationResults;
 
-        public MutationCompleteEventArgs(IEnumerable<TestResultDto> testResults)
+        public MutationCompleteEventArgs(IEnumerable<MutationDto> mutationResults)
         {
-            _testResults = testResults;
+            _mutationResults = mutationResults;
         }
 
-        public IEnumerable<TestResultDto> TestResults
+        public IEnumerable<MutationDto> MutationResults
         {
-            get { return _testResults; }
+            get { return _mutationResults; }
         }
     }
 }

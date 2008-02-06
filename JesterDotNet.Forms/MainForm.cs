@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 using JesterDotNet.Presenter;
@@ -8,11 +10,12 @@ namespace JesterDotNet.Forms
     /// <summary>
     /// Acts as the main UI for the end user.
     /// </summary>
-    public partial class MainForm : Form, IJesterView
+    public partial class 
+        MainForm : Form, IJesterView
     {
         private string _shadowedTargetAssembly;
         private string _shadowedTestAssembly;
-        
+
         #region Constructors (Public)
 
         /// <summary>
@@ -71,22 +74,25 @@ namespace JesterDotNet.Forms
         /// the event data.</param>
         void presenter_MutationComplete(object sender, MutationCompleteEventArgs e)
         {
-            foreach (TestResultDto result in e.TestResults)
+            foreach (MutationDto mutation in e.MutationResults)
             {
-                FailingTestResultDto failingTestResult = result as FailingTestResultDto;
-                if (failingTestResult != null)
+                foreach (TestResultDto result in mutation.TestResults)
                 {
-                    mutationErrorsListView.Items.Add("", 0);
-                    mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                        SubItems.Add(failingTestResult.Name);
-                    mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                        SubItems.Add(failingTestResult.Exception);
-                    mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                        SubItems.Add(failingTestResult.Message);
+                    FailingTestResultDto failingTestResult = result as FailingTestResultDto;
+                    if (failingTestResult != null)
+                    {
+                        mutationErrorsListView.Items.Add("", 0);
+                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                            SubItems.Add(failingTestResult.Name);
+                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                            SubItems.Add(failingTestResult.Exception);
+                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                            SubItems.Add(failingTestResult.Message);
+                    }
                 }
+                foreach (ColumnHeader columnHeader in mutationErrorsListView.Columns)
+                    columnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
             }
-            foreach (ColumnHeader columnHeader in mutationErrorsListView.Columns)
-                columnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void presenter_TestComplete(object sender, EventArgs e)
@@ -102,7 +108,7 @@ namespace JesterDotNet.Forms
         /// event data.</param>
         private void RunButton_Click(object sender, EventArgs e)
         {
-            backgroundWorker.RunWorkerAsync();
+            CreateAndTriggerRunEvent(null, new DoWorkEventArgs(null));
         }
 
         /// <summary>
@@ -185,30 +191,43 @@ namespace JesterDotNet.Forms
 
         private void ClearProgressBar()
         {
-            progressBar.Value = 0;
-            progressBar.Maximum = targetAssemblyTreeView.SelectedConditionals.Count;
+            if (progressBar.InvokeRequired)
+            {
+                progressBar.Invoke((MethodInvoker)
+                       delegate
+                       {
+                           progressBar.Value = 0;
+                           progressBar.Maximum = targetAssemblyTreeView.SelectedConditionals.Count;
+                       });
+            }
+            else
+            {
+                progressBar.Value = 0;
+                progressBar.Maximum = targetAssemblyTreeView.SelectedConditionals.Count;
+            }
+
         }
 
-        private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void CreateAndTriggerRunEvent(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             ClearProgressBar();
             bool locked = true;
             SetUILock(locked);
 
+            IList<MutationDto> mutations = new List<MutationDto>();
+            foreach (ConditionalDefinitionDto conditional in targetAssemblyTreeView.SelectedConditionals)
+                mutations.Add(new MutationDto(conditional, new List<TestResultDto>()));
+
             if (Run != null)
-                Run(this, new RunEventArgs(_shadowedTargetAssembly, _shadowedTestAssembly,
-                    targetAssemblyTreeView.SelectedConditionals));
+                Run(this, new RunEventArgs(_shadowedTargetAssembly, _shadowedTestAssembly, mutations));
         }
 
         private void SetUILock(bool locked)
         {
-            runButton.Enabled = !(locked);
-        }
-
-        private void backgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
-            bool locked = false;
-            SetUILock(locked);
+            if (runButton.InvokeRequired)
+                runButton.Invoke((MethodInvoker)delegate { runButton.Enabled = !(locked); });
+            else
+                runButton.Enabled = !(locked);
         }
     }
 }
