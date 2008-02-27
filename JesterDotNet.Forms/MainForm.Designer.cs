@@ -220,10 +220,12 @@ namespace JesterDotNet.Forms
             this.mutationErrorsListView.Name = "mutationErrorsListView";
             this.mutationErrorsListView.Size = new System.Drawing.Size(583, 375);
             this.mutationErrorsListView.SmallImageList = this.mutationErrorsImageList;
+            this.mutationErrorsListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.mutationErrorsListView.TabIndex = 9;
             this.mutationErrorsListView.UseCompatibleStateImageBehavior = false;
             this.mutationErrorsListView.View = System.Windows.Forms.View.Details;
             this.mutationErrorsListView.SelectedIndexChanged += new System.EventHandler(this.mutationErrorsListView_SelectedIndexChanged);
+            this.mutationErrorsListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.mutationErrorsListView_ColumnClick);
             // 
             // errorIconColumnHeader
             // 
