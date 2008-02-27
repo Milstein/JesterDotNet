@@ -10,11 +10,11 @@ namespace JesterDotNet.Forms
     /// <summary>
     /// Acts as the main UI for the end user.
     /// </summary>
-    public partial class 
-        MainForm : Form, IJesterView
+    public partial class MainForm : Form, IJesterView
     {
         private string _shadowedTargetAssembly;
         private string _shadowedTestAssembly;
+        private readonly BackgroundWorker _backgroundWorker = new BackgroundWorker();
 
         #region Constructors (Public)
 
@@ -39,9 +39,15 @@ namespace JesterDotNet.Forms
         public event EventHandler<RunEventArgs> Run;
 
         /// <summary>
-        /// Occurs when the user has requested to cancel the process.
+        /// Gets a value indicating whether user has cancelled the mutation.
         /// </summary>
-        public event EventHandler<EventArgs> Cancel;
+        /// <value>
+        /// 	<c>true</c> if the user has cancelled the mutation; otherwise, <c>false</c>.
+        /// </value>
+        public bool CancellationPending
+        {
+            get { return _backgroundWorker.CancellationPending; }
+        }
 
         #endregion
 
@@ -78,26 +84,41 @@ namespace JesterDotNet.Forms
             {
                 foreach (TestResultDto result in mutation.TestResults)
                 {
-                    FailingTestResultDto failingTestResult = result as FailingTestResultDto;
-                    if (failingTestResult != null)
+                    KilledMutantTestResultDto killedMutantTestResultDto = result as KilledMutantTestResultDto;
+                    if (killedMutantTestResultDto != null)
                     {
                         mutationErrorsListView.Items.Add("", 0);
                         mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                            SubItems.Add(failingTestResult.Name);
+                            SubItems.Add(killedMutantTestResultDto.Name);
                         mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                            SubItems.Add(failingTestResult.Exception);
+                            SubItems.Add(killedMutantTestResultDto.Exception);
                         mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                            SubItems.Add(failingTestResult.Message);
+                            SubItems.Add(killedMutantTestResultDto.Message);
+                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag = killedMutantTestResultDto;
+                    }
+                    else
+                    {
+                        SurvivingMutantTestResultDto survivingMutantTestResult = result as SurvivingMutantTestResultDto;
+                        if (survivingMutantTestResult != null)
+                        {
+                            mutationErrorsListView.Items.Add("", 1);
+                            mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                SubItems.Add(survivingMutantTestResult.Name);
+                            mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag = survivingMutantTestResult;
+                        }
                     }
                 }
                 foreach (ColumnHeader columnHeader in mutationErrorsListView.Columns)
                     columnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
             }
+            cancelButton.Enabled = false;
+            runButton.Enabled = true;
         }
 
         private void presenter_TestComplete(object sender, EventArgs e)
         {
-            progressBar.Value++;
+            if (progressBar.InvokeRequired)
+                progressBar.Invoke((MethodInvoker) delegate {progressBar.Value++;});
         }
 
         /// <summary>
@@ -138,6 +159,7 @@ namespace JesterDotNet.Forms
                 {
                     LoadProjectFile(form.ProjectFilePath);
                 }
+                runButton.Enabled = true;
             }
         }
 
@@ -208,18 +230,28 @@ namespace JesterDotNet.Forms
 
         }
 
-        private void CreateAndTriggerRunEvent(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void CreateAndTriggerRunEvent(object sender, DoWorkEventArgs e)
         {
             ClearProgressBar();
             bool locked = true;
             SetUILock(locked);
 
+            _backgroundWorker.WorkerSupportsCancellation = true;
+            _backgroundWorker.DoWork += worker_DoWork;
+            
+            _backgroundWorker.RunWorkerAsync();
+
+        }
+
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
             IList<MutationDto> mutations = new List<MutationDto>();
             foreach (ConditionalDefinitionDto conditional in targetAssemblyTreeView.SelectedConditionals)
                 mutations.Add(new MutationDto(conditional, new List<TestResultDto>()));
 
             if (Run != null)
                 Run(this, new RunEventArgs(_shadowedTargetAssembly, _shadowedTestAssembly, mutations));
+
         }
 
         private void SetUILock(bool locked)
@@ -228,6 +260,24 @@ namespace JesterDotNet.Forms
                 runButton.Invoke((MethodInvoker)delegate { runButton.Enabled = !(locked); });
             else
                 runButton.Enabled = !(locked);
+        }
+
+        private void mutationErrorsListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+             
+            if (mutationErrorsListView.SelectedItems.Count == 0)
+                return;
+
+            KilledMutantTestResultDto killedMutant = mutationErrorsListView.SelectedItems[0].Tag as KilledMutantTestResultDto;
+            if (killedMutant != null)
+            {
+                targetAssemblyTreeView.HighlightCorrespondingMember(killedMutant.ConditionalDefinition.MethodDefinition);
+            }
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            _backgroundWorker.CancelAsync();
         }
     }
 }

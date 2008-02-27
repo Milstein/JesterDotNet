@@ -46,10 +46,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Exceptions.resx</DependentUpon>
     </Compile>
-    <Compile Include="FailingTestResult.cs" />
+    <Compile Include="KilledMutantTestResult.cs" />
     <Compile Include="ITestRunner.cs" />
     <Compile Include="MbUnitTestRunner.cs" />
-    <Compile Include="PassingTestResult.cs" />
+    <Compile Include="SurvivingMutantTestResult.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="PreferencesManager.cs" />
     <Compile Include="ProcessException.cs" />

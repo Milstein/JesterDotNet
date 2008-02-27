@@ -1,12 +1,12 @@
 namespace JesterDotNet.Model
 {
-    public class FailingTestResult : TestResult
+    public class KilledMutantTestResult : TestResult
     {
         private readonly string _exception;
         private readonly string _message;
         private readonly ConditionalDefinition _conditionalDefinition;
 
-        public FailingTestResult(string name, string exception, string message, ConditionalDefinition conditionalDefinition)
+        public KilledMutantTestResult(string name, string exception, string message, ConditionalDefinition conditionalDefinition)
             : base(name)
         {
             _exception = exception;

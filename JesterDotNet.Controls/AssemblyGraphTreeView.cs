@@ -270,5 +270,14 @@ namespace JesterDotNet.Controls
 
             return false;
         }
+
+        public void HighlightCorrespondingMember(MethodDefinition definition)
+        {
+            foreach (TreeNode node in treeView.Nodes)
+            {
+                if (node.Tag == definition)
+                    node.EnsureVisible();
+            }
+        }
     }
 }

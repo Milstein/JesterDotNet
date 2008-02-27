@@ -60,9 +60,16 @@ namespace JesterDotNet.Forms.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap CriticalError {
+        internal static System.Drawing.Bitmap KilledMutant {
             get {
-                object obj = ResourceManager.GetObject("CriticalError", resourceCulture);
+                object obj = ResourceManager.GetObject("KilledMutant", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap SurvivedMutant {
+            get {
+                object obj = ResourceManager.GetObject("SurvivedMutant", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

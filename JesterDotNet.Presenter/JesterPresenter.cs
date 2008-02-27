@@ -61,6 +61,10 @@ namespace JesterDotNet.Presenter
             BranchingOpCodes opCodes = new BranchingOpCodes();
             foreach (MutationDto mutation in e.SelectedMutations)
             {
+                // If the user has cancelled this since the last test, bail out
+                if (_view.CancellationPending)
+                    break;
+
                 string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
 
                 for (int i = 0; i < mutation.Conditional.MethodDefinition.Body.Instructions.Count; i++)
@@ -85,11 +89,11 @@ namespace JesterDotNet.Presenter
                 runner.Invoke(e.TestAssembly);
 
                 foreach (TestResult result in runner.TestResults)
-                    if (result is PassingTestResult)
-                        mutation.TestResults.Add(new PassingTestResultDto((PassingTestResult)result));
+                    if (result is SurvivingMutantTestResult)
+                        mutation.TestResults.Add(new SurvivingMutantTestResultDto((SurvivingMutantTestResult)result, mutation));
 
                     else
-                        mutation.TestResults.Add(new FailingTestResultDto((FailingTestResult)result));
+                        mutation.TestResults.Add(new KilledMutantTestResultDto((KilledMutantTestResult)result, mutation));
 
                 if (_testComplete != null)
                     _testComplete(this, EventArgs.Empty);

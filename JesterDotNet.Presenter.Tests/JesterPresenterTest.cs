@@ -50,7 +50,7 @@ namespace JesterDotNet.Presenter.Tests
             int numberOfFailingTests = 0;
             foreach (MutationDto result in mutationResults)
             {
-                if (result is FailingTestResultDto)
+                if (result is KilledMutantTestResultDto)
                 {
                     numberOfFailingTests++;
                 }

@@ -15,9 +15,10 @@ namespace JesterDotNet.Presenter
         event EventHandler<RunEventArgs> Run;
 
         /// <summary>
-        /// Occurs when the user has requested to cancel the process.
+        /// Gets a value indicating whether user has cancelled the mutation.
         /// </summary>
-        event EventHandler<EventArgs> Cancel; 
+        /// <value><c>true</c> if the user has cancelled the mutation; otherwise, <c>false</c>.</value>
+        bool CancellationPending { get; }
 
         #endregion Events
     }

@@ -201,6 +201,7 @@ namespace JesterDotNet.Forms
             this.cancelButton.TabIndex = 11;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // mutationErrorsListView
             // 
@@ -211,14 +212,18 @@ namespace JesterDotNet.Forms
             this.messageColumnHeader});
             this.tableLayoutPanel.SetColumnSpan(this.mutationErrorsListView, 3);
             this.mutationErrorsListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mutationErrorsListView.FullRowSelect = true;
             this.mutationErrorsListView.GridLines = true;
+            this.mutationErrorsListView.HideSelection = false;
             this.mutationErrorsListView.Location = new System.Drawing.Point(255, 86);
+            this.mutationErrorsListView.MultiSelect = false;
             this.mutationErrorsListView.Name = "mutationErrorsListView";
             this.mutationErrorsListView.Size = new System.Drawing.Size(583, 375);
             this.mutationErrorsListView.SmallImageList = this.mutationErrorsImageList;
             this.mutationErrorsListView.TabIndex = 9;
             this.mutationErrorsListView.UseCompatibleStateImageBehavior = false;
             this.mutationErrorsListView.View = System.Windows.Forms.View.Details;
+            this.mutationErrorsListView.SelectedIndexChanged += new System.EventHandler(this.mutationErrorsListView_SelectedIndexChanged);
             // 
             // errorIconColumnHeader
             // 
@@ -244,7 +249,8 @@ namespace JesterDotNet.Forms
             // 
             this.mutationErrorsImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("mutationErrorsImageList.ImageStream")));
             this.mutationErrorsImageList.TransparentColor = System.Drawing.Color.Magenta;
-            this.mutationErrorsImageList.Images.SetKeyName(0, "CriticalError.bmp");
+            this.mutationErrorsImageList.Images.SetKeyName(0, "KilledMutant");
+            this.mutationErrorsImageList.Images.SetKeyName(1, "SurvivedMutant");
             // 
             // targetAssemblyTreeView
             // 

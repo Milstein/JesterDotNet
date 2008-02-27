@@ -42,7 +42,7 @@
     <Compile Include="BranchingOpCodes.cs" />
     <Compile Include="ConditionalDefinitionDto.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="FailingTestResultDto.cs" />
+    <Compile Include="KilledMutantTestResultDto.cs" />
     <Compile Include="IJesterView.cs" />
     <Compile Include="IPreferencesView.cs" />
     <Compile Include="JesterPresenter.cs" />
@@ -54,7 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunEventArgs.cs" />
     <Compile Include="MutationCompleteEventArgs.cs" />
-    <Compile Include="PassingTestResultDto.cs" />
+    <Compile Include="SurvivingMutantTestResultDto.cs" />
     <Compile Include="TestResultDto.cs" />
   </ItemGroup>
   <ItemGroup>

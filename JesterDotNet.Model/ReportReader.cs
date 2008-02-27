@@ -78,7 +78,7 @@ namespace JesterDotNet.Model
                 string result = _reader.Value;
                 if (result == "success")
                 {
-                    return new PassingTestResult(name);
+                    return new SurvivingMutantTestResult(name);
                 }
                 else // result == "failure"
                 {
@@ -89,7 +89,7 @@ namespace JesterDotNet.Model
                     MoveToElement("message");
                     string message = _reader.ReadElementContentAsString();
 
-                    return new FailingTestResult(name, exception, message, null);
+                    return new KilledMutantTestResult(name, exception, message, null);
                 }
             }
             catch (InvalidOperationException )

@@ -2,12 +2,13 @@ using JesterDotNet.Model;
 
 namespace JesterDotNet.Presenter
 {
-    public class FailingTestResultDto : TestResultDto
+    public class KilledMutantTestResultDto : TestResultDto
     {
-        private readonly FailingTestResult _result;
+        private readonly KilledMutantTestResult _result;
+        private readonly MutationDto _mutation;
 
-        public FailingTestResultDto(FailingTestResult result) 
-            : base(result)
+        public KilledMutantTestResultDto(KilledMutantTestResult result, MutationDto mutation) 
+            : base(result, mutation)
         {
             _result = result;
         }
