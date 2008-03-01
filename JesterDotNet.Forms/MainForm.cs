@@ -87,38 +87,81 @@ namespace JesterDotNet.Forms
                     KilledMutantTestResultDto killedMutantTestResultDto = result as KilledMutantTestResultDto;
                     if (killedMutantTestResultDto != null)
                     {
-                        mutationErrorsListView.Items.Add("", 0);
-                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                            SubItems.Add(killedMutantTestResultDto.Name);
-                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                            SubItems.Add(killedMutantTestResultDto.Exception);
-                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                            SubItems.Add(killedMutantTestResultDto.Message);
-                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag = killedMutantTestResultDto;
+                        if (mutationErrorsListView.InvokeRequired)
+                        {
+                            mutationErrorsListView.Invoke(
+                                (MethodInvoker)delegate
+                                {
+                                    mutationErrorsListView.Items.Add("", 0);
+                                    mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                        SubItems.Add(killedMutantTestResultDto.Name);
+                                    mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                        SubItems.Add(killedMutantTestResultDto.Exception);
+                                    mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                        SubItems.Add(killedMutantTestResultDto.Message);
+                                    mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag =
+                                        killedMutantTestResultDto;
+                                });
+                        }
+                        else
+                        {
+                            mutationErrorsListView.Items.Add("", 0);
+                            mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                SubItems.Add(killedMutantTestResultDto.Name);
+                            mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                SubItems.Add(killedMutantTestResultDto.Exception);
+                            mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                SubItems.Add(killedMutantTestResultDto.Message);
+                            mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag =
+                                killedMutantTestResultDto;
+                        }
                     }
                     else
                     {
                         SurvivingMutantTestResultDto survivingMutantTestResult = result as SurvivingMutantTestResultDto;
                         if (survivingMutantTestResult != null)
                         {
-                            mutationErrorsListView.Items.Add("", 1);
-                            mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
-                                SubItems.Add(survivingMutantTestResult.Name);
-                            mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag = survivingMutantTestResult;
+                            if (mutationErrorsListView.InvokeRequired)
+                            {
+                                mutationErrorsListView.Invoke(
+                                    (MethodInvoker)delegate
+                                    {
+                                        mutationErrorsListView.Items.Add("", 1);
+                                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                            SubItems.Add(survivingMutantTestResult.Name);
+                                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag = 
+                                            survivingMutantTestResult;
+                                    });
+                            }
+                            else
+                            {
+                                mutationErrorsListView.Items.Add("", 1);
+                                mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
+                                    SubItems.Add(survivingMutantTestResult.Name);
+                                mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag =
+                                    survivingMutantTestResult;
+                            }
                         }
                     }
                 }
                 foreach (ColumnHeader columnHeader in mutationErrorsListView.Columns)
                     columnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
             }
-            cancelButton.Enabled = false;
-            runButton.Enabled = true;
+            if (cancelButton.InvokeRequired)
+                cancelButton.Invoke((MethodInvoker)delegate { cancelButton.Enabled = false; });
+            else
+                cancelButton.Enabled = false;
+
+            if (runButton.InvokeRequired)
+                runButton.Invoke((MethodInvoker)delegate { runButton.Enabled = true; });
+            else
+                runButton.Enabled = true;
         }
 
         private void presenter_TestComplete(object sender, EventArgs e)
         {
             if (progressBar.InvokeRequired)
-                progressBar.Invoke((MethodInvoker) delegate {progressBar.Value++;});
+                progressBar.Invoke((MethodInvoker)delegate { progressBar.Value++; });
         }
 
         /// <summary>
@@ -239,7 +282,7 @@ namespace JesterDotNet.Forms
 
             _backgroundWorker.WorkerSupportsCancellation = true;
             _backgroundWorker.DoWork += worker_DoWork;
-            
+
             _backgroundWorker.RunWorkerAsync();
 
         }
