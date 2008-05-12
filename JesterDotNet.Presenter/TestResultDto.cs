@@ -1,3 +1,4 @@
+using System;
 using JesterDotNet.Model;
 
 namespace JesterDotNet.Presenter

@@ -126,30 +126,5 @@ namespace JesterDotNet.Presenter
             return outputFileName;
         }
         #endregion Event Handlers (Private)
-
-        /// <summary>
-        /// Extracts the common IL conditional operations from the given stream.
-        /// </summary>
-        /// <param name="ilStream">The IL stream containing the conditional operations.
-        /// </param>
-        /// <returns>An array of the conditional operations found in the given IL stream.
-        /// </returns>
-        public string[] ExtractConditionals(Stream ilStream)
-        {
-            // TODO: This may not be needed - we seem to only be using it from a unit test
-            string[] foundConditionals;
-            using (StreamReader reader = new StreamReader(ilStream))
-            {
-                string[] conditionals = {"brtrue.s", "brfalse.s"};
-                string ilString = reader.ReadToEnd();
-                string[] tokens = ilString.Split(new char[] {' '},
-                    StringSplitOptions.RemoveEmptyEntries);
-
-                foundConditionals =
-                    Array.FindAll(tokens,
-                        delegate(string tok) { return ((tok == conditionals[0]) || (tok == conditionals[1])); });
-            }
-            return foundConditionals;
-        }
     }
 }

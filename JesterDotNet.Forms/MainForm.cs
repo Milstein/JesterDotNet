@@ -129,7 +129,7 @@ namespace JesterDotNet.Forms
                                         mutationErrorsListView.Items.Add("", 1);
                                         mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].
                                             SubItems.Add(survivingMutantTestResult.Name);
-                                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag = 
+                                        mutationErrorsListView.Items[mutationErrorsListView.Items.Count - 1].Tag =
                                             survivingMutantTestResult;
                                     });
                             }
@@ -144,8 +144,20 @@ namespace JesterDotNet.Forms
                         }
                     }
                 }
-                foreach (ColumnHeader columnHeader in mutationErrorsListView.Columns)
-                    columnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                if (mutationErrorsListView.InvokeRequired)
+                {
+                    mutationErrorsListView.Invoke(
+                        (MethodInvoker)delegate
+                           {
+                               foreach (ColumnHeader columnHeader in mutationErrorsListView.Columns)
+                                   columnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                           });
+                }
+                else
+                {
+                    foreach (ColumnHeader columnHeader in mutationErrorsListView.Columns)
+                        columnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                }
             }
             if (cancelButton.InvokeRequired)
                 cancelButton.Invoke((MethodInvoker)delegate { cancelButton.Enabled = false; });
@@ -276,15 +288,16 @@ namespace JesterDotNet.Forms
         private void CreateAndTriggerRunEvent(object sender, DoWorkEventArgs e)
         {
             ClearProgressBar();
-            mutationErrorsListView.Clear();
+            mutationErrorsListView.Items.Clear();
+
             bool locked = true;
             SetUILock(locked);
 
             _backgroundWorker.WorkerSupportsCancellation = true;
             _backgroundWorker.DoWork += worker_DoWork;
 
-            _backgroundWorker.RunWorkerAsync();
-
+            //_backgroundWorker.RunWorkerAsync();
+            worker_DoWork(null, null);
         }
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
@@ -308,14 +321,14 @@ namespace JesterDotNet.Forms
 
         private void mutationErrorsListView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (mutationErrorsListView.SelectedItems.Count == 0)
-            //    return;
+            if (mutationErrorsListView.SelectedItems.Count == 0)
+                return;
 
-            //KilledMutantTestResultDto killedMutant = mutationErrorsListView.SelectedItems[0].Tag as KilledMutantTestResultDto;
-            //if (killedMutant != null)
-            //{
-            //    targetAssemblyTreeView.HighlightCorrespondingMember(killedMutant.ConditionalDefinition.MethodDefinition);
-            //}
+            KilledMutantTestResultDto killedMutant = mutationErrorsListView.SelectedItems[0].Tag as KilledMutantTestResultDto;
+            if (killedMutant != null)
+            {
+                targetAssemblyTreeView.HighlightCorrespondingMember(killedMutant.ConditionalDefinition.MethodDefinition);
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

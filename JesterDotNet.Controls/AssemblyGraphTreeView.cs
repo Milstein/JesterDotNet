@@ -271,13 +271,22 @@ namespace JesterDotNet.Controls
             return false;
         }
 
-        public void HighlightCorrespondingMember(MethodDefinition definition)
+        public void HighlightCorrespondingMember(MethodDefinition associatedMethod)
         {
             foreach (TreeNode node in treeView.Nodes)
             {
-                if (node.Tag == definition)
-                    node.EnsureVisible();
+                TreeNode matchingNode = GetCorrespondingNode(associatedMethod);
+                if (matchingNode != null)
+                    matchingNode.EnsureVisible();
             }
+        }
+
+        private TreeNode GetCorrespondingNode(TreeNode node)
+        {
+            MethodDefinition methodDefinition = node.Tag as MethodDefinition;
+            if (methodDefinition != null)
+                if (methodDefinition.ToString() == method.ToString())
+                    return node;
         }
     }
 }

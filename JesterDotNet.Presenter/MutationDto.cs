@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace JesterDotNet.Presenter
@@ -6,7 +7,7 @@ namespace JesterDotNet.Presenter
     {
         private readonly ConditionalDefinitionDto _conditional;
         private readonly IList<TestResultDto> _testResults;
-
+        
         public MutationDto(ConditionalDefinitionDto conditional, IList<TestResultDto> testResults)
         {
             _conditional = conditional;

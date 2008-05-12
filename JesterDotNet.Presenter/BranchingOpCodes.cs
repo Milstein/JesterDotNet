@@ -8,8 +8,6 @@ namespace JesterDotNet.Presenter
     /// </summary>
     public class BranchingOpCodes : Dictionary<OpCode, OpCode>
     {
-        // TODO: This could be a pretty expensive class to create...should we make this a monostate?
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BranchingOpCodes"/> class.
         /// </summary>
