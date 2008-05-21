@@ -30,7 +30,7 @@ namespace JesterDotNet.Presenter.Tests
             UnpackSupportingTestFrameworkFiles();
 
             MockRepository repository = new MockRepository();
-            IJesterView view = repository.CreateMock<IJesterView>();
+            IJesterView view = repository.DynamicMock<IJesterView>();
             IEventRaiser runEvent;
             IEnumerable<MutationDto> mutationResults = null;
             using (repository.Record())
@@ -48,17 +48,14 @@ namespace JesterDotNet.Presenter.Tests
             }
 
             int numberOfFailingTests = 0;
-            foreach (MutationDto result in mutationResults)
-            {
-                if (result is KilledMutantTestResultDto)
-                {
-                    numberOfFailingTests++;
-                }
-            }
+            foreach (MutationDto mutationDto in mutationResults)
+                foreach (TestResultDto testResult in mutationDto.TestResults)
+                    if (testResult is KilledMutantTestResultDto)
+                        numberOfFailingTests++;
+
             Assert.AreEqual(3, numberOfFailingTests,
                 "After the inversion, two of the tests should fail.");
         }
-
 
         /// <summary>
         /// Gets mutations containing all conditionals found in the given assemlby.

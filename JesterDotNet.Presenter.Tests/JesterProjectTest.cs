@@ -42,9 +42,9 @@ namespace JesterDotNet.Presenter.Tests
             JesterProjectSerializer serializer = new JesterProjectSerializer();
             JesterProject project = serializer.Deserialize(sampleProjectFile);
 
-            Assert.AreEqual(project.TargetAssemblyPath, "AnimalFarm.dll", 
+            Assert.AreEqual(Path.GetFileName(project.TargetAssemblyPath), "AnimalFarm.dll", 
                 "The expected value for the target assembly was not found.");
-            Assert.AreEqual(project.TestAssemblyPath, "AnimalFarm.Tests.dll", 
+            Assert.AreEqual(Path.GetFileName(project.TestAssemblyPath), "AnimalFarm.Tests.dll", 
                 "The expected value for the test assembly was not found.");
         }
 

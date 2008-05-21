@@ -275,7 +275,7 @@ namespace JesterDotNet.Controls
         {
             foreach (TreeNode node in treeView.Nodes)
             {
-                TreeNode matchingNode = GetCorrespondingNode(associatedMethod);
+                TreeNode matchingNode = GetCorrespondingNode(node);
                 if (matchingNode != null)
                     matchingNode.EnsureVisible();
             }
@@ -285,8 +285,9 @@ namespace JesterDotNet.Controls
         {
             MethodDefinition methodDefinition = node.Tag as MethodDefinition;
             if (methodDefinition != null)
-                if (methodDefinition.ToString() == method.ToString())
+                if (methodDefinition.ToString() == methodDefinition.ToString())
                     return node;
+            return null;
         }
     }
 }

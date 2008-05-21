@@ -50,7 +50,7 @@ namespace JesterDotNet.Model
         private IEnumerable<TestResult> GetTestResults()
         {
             string reportPath = GetMostRecentReport();
-
+            
             IEnumerable<TestResult> testResults;
             using (FileStream fileStream = new FileStream(reportPath, FileMode.Open))
             {
