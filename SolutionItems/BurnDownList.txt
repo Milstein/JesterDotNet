@@ -13,4 +13,4 @@ POST RELEASE
 *There shouldn't be an MbUnit specific reference inside of the preferences file, it should
 	only refer to the type of testing framework used
     
--Change for git
+-Change for git 
