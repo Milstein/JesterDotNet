@@ -1,10 +1,19 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{E936628A-F24A-4006-837E-7FB07BC142F0}"
 	ProjectSection(SolutionItems) = preProject
 		SolutionItems\BurnDownList.txt = SolutionItems\BurnDownList.txt
 		SolutionItems\JesterDotNet.build = SolutionItems\JesterDotNet.build
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{46729502-EFA1-497B-B292-077F301A325F}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\MbUnit.Framework.dll = Dependencies\MbUnit.Framework.dll
+		Dependencies\Mono.Cecil.dll = Dependencies\Mono.Cecil.dll
+		Dependencies\Mono.Cecil.Mdb.dll = Dependencies\Mono.Cecil.Mdb.dll
+		Dependencies\Mono.Cecil.Pdb.dll = Dependencies\Mono.Cecil.Pdb.dll
+		Dependencies\Rhino.Mocks.dll = Dependencies\Rhino.Mocks.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Presenter", "JesterDotNet.Presenter\JesterDotNet.Presenter.csproj", "{235B8F67-F452-48C5-8A76-2C918742C55E}"
@@ -16,15 +25,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Presenter.Tests", "JesterDotNet.Presenter.Tests\JesterDotNet.Presenter.Tests.csproj", "{F98E92BE-34E6-43C7-8AD1-8AF50CCC8782}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Forms", "JesterDotNet.Forms\JesterDotNet.Forms.csproj", "{8CBFF525-F05C-4C5C-A4BE-4BE79A3C3137}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{46729502-EFA1-497B-B292-077F301A325F}"
-	ProjectSection(SolutionItems) = preProject
-		Dependencies\MbUnit.Framework.dll = Dependencies\MbUnit.Framework.dll
-		Dependencies\Mono.Cecil.dll = Dependencies\Mono.Cecil.dll
-		Dependencies\Mono.Cecil.Mdb.dll = Dependencies\Mono.Cecil.Mdb.dll
-		Dependencies\Mono.Cecil.Pdb.dll = Dependencies\Mono.Cecil.Pdb.dll
-		Dependencies\Rhino.Mocks.dll = Dependencies\Rhino.Mocks.dll
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.Controls", "JesterDotNet.Controls\JesterDotNet.Controls.csproj", "{9879AF07-1823-4FC4-B967-1E8565A25D1A}"
 EndProject
