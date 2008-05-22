@@ -12,3 +12,5 @@ POST RELEASE
 *Refactor MbUnit related code into a separate assembly to reinforce the plugin architecture
 *There shouldn't be an MbUnit specific reference inside of the preferences file, it should
 	only refer to the type of testing framework used
+    
+-Change for git
