@@ -1,5 +1,0 @@
-C:\dev\Personal\SourceForge\jesterdotnet\JesterDotNet.UI.Utility\bin\Debug\JesterDotNet.UI.Utility.dll
-C:\dev\Personal\SourceForge\jesterdotnet\JesterDotNet.UI.Utility\bin\Debug\JesterDotNet.UI.Utility.pdb
-C:\dev\Personal\SourceForge\jesterdotnet\JesterDotNet.UI.Utility\obj\Debug\ResolveAssemblyReference.cache
-C:\dev\Personal\SourceForge\jesterdotnet\JesterDotNet.UI.Utility\obj\Debug\JesterDotNet.UI.Utility.dll
-C:\dev\Personal\SourceForge\jesterdotnet\JesterDotNet.UI.Utility\obj\Debug\JesterDotNet.UI.Utility.pdb
