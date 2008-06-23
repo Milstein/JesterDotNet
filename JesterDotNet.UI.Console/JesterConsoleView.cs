@@ -1,17 +1,8 @@
-﻿using System;
+using System;
 using JesterDotNet.Presenter;
 
 namespace JesterDotNet.UI.Console
 {
-    internal class Program
-    {
-        private static void Main(string[] args)
-        {
-            var consoleView = new JesterConsoleView();
-            consoleView.RunMutation(args[0], args[1]);
-        }
-    }
-
     internal class JesterConsoleView : IJesterView
     {
         /// <summary>
