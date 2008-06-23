@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>ba6b0b05-96d3-4261-9e3f-1c288fc28940</ProjectGuid>
+    <ProjectGuid>{800C65AB-DA44-4790-82A8-FDDB0C0CE2D8}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JesterDotNet.UI.Console</RootNamespace>
@@ -45,8 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JesterConsoleView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JesterDotNet.Presenter\JesterDotNet.Presenter.csproj">
+      <Project>{235B8F67-F452-48C5-8A76-2C918742C55E}</Project>
+      <Name>JesterDotNet.Presenter</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\AnimalFarm.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\AnimalFarm.Tests.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

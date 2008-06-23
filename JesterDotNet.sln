@@ -36,6 +36,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "JesterDotNet.Deployment", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.UI.Utility", "JesterDotNet.UI.Utility\JesterDotNet.UI.Utility.csproj", "{DB2D72AD-48F8-4D23-A65D-5C891F1AAFFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JesterDotNet.UI.Console", "JesterDotNet.UI.Console\JesterDotNet.UI.Console.csproj", "{800C65AB-DA44-4790-82A8-FDDB0C0CE2D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{DB2D72AD-48F8-4D23-A65D-5C891F1AAFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB2D72AD-48F8-4D23-A65D-5C891F1AAFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB2D72AD-48F8-4D23-A65D-5C891F1AAFFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{800C65AB-DA44-4790-82A8-FDDB0C0CE2D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{800C65AB-DA44-4790-82A8-FDDB0C0CE2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{800C65AB-DA44-4790-82A8-FDDB0C0CE2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{800C65AB-DA44-4790-82A8-FDDB0C0CE2D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

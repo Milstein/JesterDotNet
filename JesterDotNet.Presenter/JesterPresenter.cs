@@ -57,7 +57,7 @@ namespace JesterDotNet.Presenter
         /// containing the event data.</param>
         private void OnViewRun(object sender, RunEventArgs e)
         {
-            // TODO: We can probably tighten up this for loop if we take a closer look at this loop
+            // TODO: We can probably tighten up this for loop if we take a closer look at it
             BranchingOpCodes opCodes = new BranchingOpCodes();
             foreach (MutationDto mutation in e.SelectedMutations)
             {

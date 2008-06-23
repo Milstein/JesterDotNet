@@ -10,7 +10,11 @@ namespace JesterDotNet.UI.Console
             var presenter = new JesterPresenter(consoleView);
             presenter.MutationComplete += OnPresenterMutationComplete;
             presenter.TestComplete += OnPresenterTestComplete;
-
+            
+            // Need to make this work for Console views 
+            //IList<MutationDto> mutations = new List<MutationDto>();
+            //foreach (ConditionalDefinitionDto conditional in targetAssemblyTreeView.SelectedConditionals)
+            //    mutations.Add(new MutationDto(conditional, new List<TestResultDto>()));
             consoleView.RunMutation(args[0], args[1]);
         }
 
