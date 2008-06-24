@@ -41,10 +41,10 @@ namespace JesterDotNet.Model
         /// </summary>
         public static void Save()
         {
-            using (FileStream stream = new FileStream(Constants.PreferencesFilePath, 
+            using (var stream = new FileStream(Constants.PreferencesFilePath, 
                 FileMode.OpenOrCreate))
             {
-                XmlSerializer preferencesSerializer = new XmlSerializer(typeof(Preferences));
+                var preferencesSerializer = new XmlSerializer(typeof(Preferences));
                 preferencesSerializer.Serialize(stream, _preferences);
             }
         }
@@ -59,22 +59,18 @@ namespace JesterDotNet.Model
         private static Preferences Retrieve()
         {
             Preferences reconstitutedPreferences;
-
             if (File.Exists(Constants.PreferencesFilePath))
             {
-                using (FileStream stream = new FileStream(Constants.PreferencesFilePath, 
-                    FileMode.Open))
+                using (var stream = new FileStream(Constants.PreferencesFilePath, FileMode.Open))
                 {
-                    XmlSerializer preferencesSerializer = new XmlSerializer(typeof(Preferences));
-                    reconstitutedPreferences =
-                        (Preferences)preferencesSerializer.Deserialize(stream);
+                    var preferencesSerializer = new XmlSerializer(typeof(Preferences));
+                    reconstitutedPreferences = (Preferences)preferencesSerializer.Deserialize(stream);
                 }
             }
             else
             {
                 reconstitutedPreferences = new Preferences();
             }
-
             return reconstitutedPreferences;
         }
     }
