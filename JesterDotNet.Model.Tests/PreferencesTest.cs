@@ -26,10 +26,7 @@ namespace JesterDotNet.Model.Tests
         public void Can_save_and_reconstitute_settings_from_the_Preferences_file()
         {
             Preferences originalPreferences = PreferencesManager.Preferences;
-            originalPreferences.ILDasmPath = ILDasmPath;
             originalPreferences.TempPath = TempPath;
-            originalPreferences.OutputILFileName = OutputILFileName;
-            originalPreferences.ILAsmPath = ILAsmPath;
             originalPreferences.OutputExeFileName = OutputExeFileName;
             originalPreferences.OutputDllFileName = OutputDllFileName;
             originalPreferences.MbUnitPath = MbUnitPath;
@@ -37,15 +34,9 @@ namespace JesterDotNet.Model.Tests
             PreferencesManager.Save();
             Preferences reconstitutedPreferences = PreferencesManager.Preferences;
 
-            Assert.AreEqual(originalPreferences.ILDasmPath, reconstitutedPreferences.ILDasmPath);
             Assert.AreEqual(originalPreferences.TempPath, reconstitutedPreferences.TempPath);
-            Assert.AreEqual(originalPreferences.OutputILFileName,
-                            reconstitutedPreferences.OutputILFileName);
-            Assert.AreEqual(originalPreferences.ILAsmPath, reconstitutedPreferences.ILAsmPath);
-            Assert.AreEqual(originalPreferences.OutputExeFileName,
-                            reconstitutedPreferences.OutputExeFileName);
-            Assert.AreEqual(originalPreferences.OutputDllFileName,
-                            reconstitutedPreferences.OutputDllFileName);
+            Assert.AreEqual(originalPreferences.OutputExeFileName, reconstitutedPreferences.OutputExeFileName);
+            Assert.AreEqual(originalPreferences.OutputDllFileName, reconstitutedPreferences.OutputDllFileName);
             Assert.AreEqual(originalPreferences.MbUnitPath, reconstitutedPreferences.MbUnitPath);
         }
     }

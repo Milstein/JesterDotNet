@@ -28,8 +28,7 @@ namespace JesterDotNet.Presenter
         /// event data.</param>
         private static void OnViewPreferencesUpdated(object sender, PreferencesUpdatedEventArgs e)
         {
-            PreferencesManager.Preferences.ILAsmPath = e.ILAsmPath;
-            PreferencesManager.Preferences.ILDasmPath = e.ILDasmPath;
+            // TODO: Update additional user settings here
             PreferencesManager.Save();
         }
     }
