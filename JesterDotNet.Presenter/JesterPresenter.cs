@@ -57,8 +57,66 @@ namespace JesterDotNet.Presenter
         /// containing the event data.</param>
         private void OnViewRun(object sender, RunEventArgs e)
         {
-            // TODO: We can probably tighten up this for loop if we take a closer look at it
             BranchingOpCodes opCodes = new BranchingOpCodes();
+            if (e.SelectedMutations == null)
+            {
+                // If the user has cancelled this since the last test, bail out
+                if (_view.CancellationPending)
+                    return;
+
+                MutateAllConditionals(e, opCodes);
+            }
+            else
+            {
+                MutateSelectedConditionals(e, opCodes);
+            }
+            if (_mutationComplete != null)
+                _mutationComplete(this, new MutationCompleteEventArgs(e.SelectedMutations));
+        }
+
+        private void MutateAllConditionals(RunEventArgs e, BranchingOpCodes opCodes)
+        {
+            string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
+
+            AssemblyDefinition inputAssembly = AssemblyFactory.GetAssembly(e.InputAssembly);
+            foreach (ModuleDefinition module in inputAssembly.Modules)
+            {
+                foreach (TypeDefinition type in module.Types)
+                {
+                    foreach (MethodDefinition method in type.Methods)
+                    {
+                        for (int i = 0; i < method.Body.Instructions.Count; i++)
+                        {
+                            Instruction instruction = method.Body.Instructions[i];
+                            if (opCodes.Contains(instruction.OpCode))
+                                instruction.OpCode = opCodes.Invert(instruction.OpCode);
+                        }
+
+                        // Replace the original target assembly with the mutated assembly
+                        File.Delete(e.InputAssembly);
+                        AssemblyFactory.SaveAssembly(method.DeclaringType.Module.Assembly, outputFile);
+                        File.Copy(outputFile, e.InputAssembly);
+
+                        // Run the unit tests again, this time against the mutated assembly
+                        var runner = new MbUnitTestRunner();
+                        runner.Invoke(e.TestAssembly);
+
+                        //foreach (TestResult result in runner.TestResults)
+                        //    if (result is SurvivingMutantTestResult)
+                        //        mutation.TestResults.Add(new SurvivingMutantTestResultDto((SurvivingMutantTestResult)result, mutation));
+
+                        //    else
+                        //        mutation.TestResults.Add(new KilledMutantTestResultDto((KilledMutantTestResult)result, mutation));
+
+                        if (_testComplete != null)
+                            _testComplete(this, EventArgs.Empty);
+                    }
+                }
+            }
+        }
+
+        private void MutateSelectedConditionals(RunEventArgs e, BranchingOpCodes opCodes)
+        {
             foreach (MutationDto mutation in e.SelectedMutations)
             {
                 // If the user has cancelled this since the last test, bail out
@@ -66,17 +124,12 @@ namespace JesterDotNet.Presenter
                     break;
 
                 string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
-
                 for (int i = 0; i < mutation.Conditional.MethodDefinition.Body.Instructions.Count; i++)
                 {
                     Instruction instruction = mutation.Conditional.MethodDefinition.Body.Instructions[i];
                     if (opCodes.Contains(instruction.OpCode))
-                    {
                         if (i == mutation.Conditional.InstructionNumber)
-                        {
                             instruction.OpCode = opCodes.Invert(instruction.OpCode);
-                        }
-                    }
                 }
 
                 // Replace the original target assembly with the mutated assembly
@@ -98,9 +151,6 @@ namespace JesterDotNet.Presenter
                 if (_testComplete != null)
                     _testComplete(this, EventArgs.Empty);
             }
-
-            if (_mutationComplete != null)
-                _mutationComplete(this, new MutationCompleteEventArgs(e.SelectedMutations));
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace JesterDotNet.UI.Console
         /// <value><c>true</c> if the user has cancelled the mutation; otherwise, <c>false</c>.</value>
         public bool CancellationPending
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         public void RunMutation(string targetAssembly, string testAssembly)
