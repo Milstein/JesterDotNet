@@ -89,7 +89,7 @@ namespace JesterDotNet.Presenter
                 foreach (TypeDefinition type in module.Types)
                 {
                     if (type.IsInterface)
-                        break;
+                        continue;
                     
                     foreach (MethodDefinition method in type.Methods)
                     {
