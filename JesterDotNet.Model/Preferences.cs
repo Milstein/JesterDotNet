@@ -14,7 +14,7 @@ namespace JesterDotNet.Model
             TempPath = Path.GetTempPath();
             OutputExeFileName = "Temp.exe";
             OutputDllFileName = "Temp.dll";
-            MbUnitPath = @"C:\Program Files\MbUnit\bin";
+            MbUnitPath = @"C:\Program Files\MbUnit\bin\MbUnit.Cons.exe";
         }
 
         /// <summary>

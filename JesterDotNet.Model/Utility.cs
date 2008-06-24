@@ -83,7 +83,7 @@ namespace JesterDotNet.Model
         public static string EncloseInQuotes(string str)
         {
             str = str.Insert(0, "\"");
-            str = str.Insert(str.Length - 1, "\"");
+            str = str.Insert(str.Length, "\"");
 
             return str;
         }

@@ -10,7 +10,7 @@ namespace JesterDotNet.Model
     public class MbUnitTestRunner : ITestRunner
     {
         // TODO: This should be a directly inside of a Jester specific directory
-        private readonly string _reportFolder = @"C:\temp";
+        private static readonly string _reportFolder = Path.GetTempPath();
         private IEnumerable<TestResult> _testResults;
         readonly Preferences _preferences = PreferencesManager.Preferences;
 
@@ -33,7 +33,7 @@ namespace JesterDotNet.Model
         /// </summary>
         public void Invoke(string testAssembly)
         {
-            ProcessInvoker invoker = new ProcessInvoker(_preferences.MbUnitPath,
+            var invoker = new ProcessInvoker(_preferences.MbUnitPath,
                 string.Format(Thread.CurrentThread.CurrentUICulture,
                 @"/report-type:XML /report-folder:{0} {1}", 
                 Utility.EncloseInQuotes(_reportFolder), 
@@ -49,12 +49,12 @@ namespace JesterDotNet.Model
 
         private IEnumerable<TestResult> GetTestResults()
         {
-            string reportPath = GetMostRecentReport();
+            var reportPath = GetMostRecentReport();
             
             IEnumerable<TestResult> testResults;
-            using (FileStream fileStream = new FileStream(reportPath, FileMode.Open))
+            using (var fileStream = new FileStream(reportPath, FileMode.Open))
             {
-                ReportReader reader = new ReportReader(fileStream);
+                var reader = new ReportReader(fileStream);
                 reader.ReadReport();
                 testResults = reader.TestResults;
             }
@@ -64,18 +64,16 @@ namespace JesterDotNet.Model
 
         private string GetMostRecentReport()
         {
-            DirectoryInfo tempDirectory = new DirectoryInfo(_reportFolder);
-            FileInfo[] reportFiles = tempDirectory.GetFiles("mbunit*");
+            var tempDirectory = new DirectoryInfo(_reportFolder);
+            var reportFiles = tempDirectory.GetFiles("mbunit*");
 
-            FileInfo newestReport = reportFiles[0];
-            foreach (FileInfo reportFile in reportFiles)
+            var newestReport = reportFiles[0];
+            foreach (var reportFile in reportFiles)
             {
-                // Whichever report file was created most recently is the report file
-                // we want
+                // Whichever report file was created most recently is the report file we want
                 newestReport = (reportFile.CreationTime > newestReport.CreationTime) ?
                     reportFile : newestReport;
             }
-
             return newestReport.FullName;
         }
     }

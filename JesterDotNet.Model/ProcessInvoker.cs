@@ -49,15 +49,14 @@ namespace JesterDotNet.Model
         /// </returns>
         public int Start()
         {
-            Process process = new Process();
-            process.StartInfo = _info;
+            var process = new Process { StartInfo = _info };
             process.Start();
             process.WaitForExit();
 
 #if DEBUG
 #pragma warning disable 168
-            string stdError = process.StandardError.ReadToEnd();
-            string stdOutput = process.StandardOutput.ReadToEnd();
+            var stdError = process.StandardError.ReadToEnd();
+            var stdOutput = process.StandardOutput.ReadToEnd();
 #pragma warning restore 168
 #endif
 
