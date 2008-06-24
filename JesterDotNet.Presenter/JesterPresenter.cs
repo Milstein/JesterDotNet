@@ -74,6 +74,11 @@ namespace JesterDotNet.Presenter
                 _mutationComplete(this, new MutationCompleteEventArgs(e.SelectedMutations));
         }
 
+        /// <summary>
+        /// Mutates all conditionals found in a given assembly.
+        /// </summary>
+        /// <param name="e">The <see cref="RunEventArgs"/> instance containing the event data.</param>
+        /// <param name="opCodes">The list of valid OP codes.</param>
         private void MutateAllConditionals(RunEventArgs e, BranchingOpCodes opCodes)
         {
             string outputFile = GetOutputAssemblyFileName(e.InputAssembly);
@@ -111,6 +116,11 @@ namespace JesterDotNet.Presenter
             }
         }
 
+        /// <summary>
+        /// Mutates the only the conditionals specified in <see cref="RunEventArgs.SelectedMutations"/>.
+        /// </summary>
+        /// <param name="e">The <see cref="RunEventArgs"/> instance containing the event data.</param>
+        /// <param name="opCodes">The list of valid OP codes.</param>
         private void MutateSelectedConditionals(RunEventArgs e, BranchingOpCodes opCodes)
         {
             foreach (MutationDto mutation in e.SelectedMutations)
