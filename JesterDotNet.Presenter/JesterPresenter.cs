@@ -18,7 +18,7 @@ namespace JesterDotNet.Presenter
 
         #region Events (Private)
         private event EventHandler<MutationCompleteEventArgs> _mutationComplete;
-        private event EventHandler<EventArgs> _testComplete;
+        private event EventHandler<TestCompleteEventArgs> _testComplete;
         #endregion Events (Private)
 
         #region Constructors (Public)
@@ -40,7 +40,7 @@ namespace JesterDotNet.Presenter
             remove { _mutationComplete -= value; }
         }
 
-        public event EventHandler<EventArgs> TestComplete
+        public event EventHandler<TestCompleteEventArgs> TestComplete
         {
             add { _testComplete += value; }
             remove { _testComplete -= value; }
@@ -110,7 +110,7 @@ namespace JesterDotNet.Presenter
                         runner.Invoke(e.TestAssembly);
 
                         if (_testComplete != null)
-                            _testComplete(this, EventArgs.Empty);
+                            _testComplete(this, new TestCompleteEventArgs(runner.TestResults));
                     }
                 }
             }
@@ -155,7 +155,7 @@ namespace JesterDotNet.Presenter
                         mutation.TestResults.Add(new KilledMutantTestResultDto((KilledMutantTestResult)result, mutation));
 
                 if (_testComplete != null)
-                    _testComplete(this, EventArgs.Empty);
+                    _testComplete(this, new TestCompleteEventArgs(runner.TestResults));
             }
         }
 

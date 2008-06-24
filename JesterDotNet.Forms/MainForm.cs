@@ -176,7 +176,7 @@ namespace JesterDotNet.Forms
                 runButton.Enabled = true;
         }
 
-        private void presenter_TestComplete(object sender, EventArgs e)
+        private void presenter_TestComplete(object sender, TestCompleteEventArgs e)
         {
             if (progressBar.InvokeRequired)
                 progressBar.Invoke((MethodInvoker) delegate { progressBar.Value++; });

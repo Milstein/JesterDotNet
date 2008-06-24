@@ -14,7 +14,7 @@ namespace JesterDotNet.UI.Console
             consoleView.RunMutation(args[0], args[1]);
         }
 
-        static void OnPresenterTestComplete(object sender, System.EventArgs e)
+        static void OnPresenterTestComplete(object sender, TestCompleteEventArgs e)
         {
         }
 
