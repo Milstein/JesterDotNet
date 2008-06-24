@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="JesterProjectTest.cs" />
     <Compile Include="JesterPresenterTest.cs" />
-    <Compile Include="PreferencesPresenterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

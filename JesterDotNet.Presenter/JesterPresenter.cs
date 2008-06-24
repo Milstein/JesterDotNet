@@ -83,6 +83,9 @@ namespace JesterDotNet.Presenter
             {
                 foreach (TypeDefinition type in module.Types)
                 {
+                    if (type.IsInterface)
+                        break;
+                    
                     foreach (MethodDefinition method in type.Methods)
                     {
                         for (int i = 0; i < method.Body.Instructions.Count; i++)
@@ -100,13 +103,6 @@ namespace JesterDotNet.Presenter
                         // Run the unit tests again, this time against the mutated assembly
                         var runner = new MbUnitTestRunner();
                         runner.Invoke(e.TestAssembly);
-
-                        //foreach (TestResult result in runner.TestResults)
-                        //    if (result is SurvivingMutantTestResult)
-                        //        mutation.TestResults.Add(new SurvivingMutantTestResultDto((SurvivingMutantTestResult)result, mutation));
-
-                        //    else
-                        //        mutation.TestResults.Add(new KilledMutantTestResultDto((KilledMutantTestResult)result, mutation));
 
                         if (_testComplete != null)
                             _testComplete(this, EventArgs.Empty);
